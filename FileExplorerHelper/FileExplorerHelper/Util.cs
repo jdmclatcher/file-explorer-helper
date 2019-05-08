@@ -72,26 +72,27 @@ namespace FileExplorerHelper
         private void countFilesAndFolders()
         {
             FileInfo[] files = new DirectoryInfo(rootFolder.FullName).GetFiles();
-            Console.WriteLine(files);
-            int fileCount = 0;
-            int folderCount = 0;
+            DirectoryInfo[] folders = new DirectoryInfo(rootFolder.FullName).GetDirectories();
+            List<FileInfo> filesNew = files.ToList<FileInfo>();
+            List<DirectoryInfo> foldersNew = folders.ToList<DirectoryInfo>();
+
             for (int i = 0; i < files.Length; i++)
             {
-                // TODO - check if file or folder
-                // increase count based on if file or folder
-                if (File.Exists(files[i].FullName))
+                // check if .ini desktop file
+                if(returnExtenstion(files[i]).Equals("ini", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    Console.WriteLine("File found.");
-                    fileCount++;
-                }
-                else if (Directory.Exists(files[i].FullName))
-                {
-                    Console.WriteLine("Sub-Folder found.");
-                    folderCount++;
+                    filesNew.RemoveAt(i);
                 }
             }
-            setNumFiles(fileCount);
-            setNumSubFolders(folderCount);
+            setNumFiles(filesNew.Count);
+            setNumSubFolders(foldersNew.Count);
+        }
+
+        // return the file extension with no "."
+        private string returnExtenstion(FileInfo file)
+        {
+            // find last index of the "." for the extension
+            return file.FullName.Substring(file.FullName.LastIndexOf('.') + 1);
         }
 
         #endregion

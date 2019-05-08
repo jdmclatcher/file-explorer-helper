@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <TextBlock HorizontalAlignment="Left" Margin="281,26,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" Width="102" FontWeight="Bold"/>
+        <Button Click="Button_Click" Content="Button" HorizontalAlignment="Left" Margin="322,121,0,0" VerticalAlignment="Top" Width="134"/>
+        <TextBlock HorizontalAlignment="Left" Margin="281,47,0,0" TextWrapping="Wrap" Text="FILE IN FOLDER:" VerticalAlignment="Top" Width="86"/>
+        <TextBlock HorizontalAlignment="Left" Margin="281,68,0,0" TextWrapping="Wrap" Text="SUBFOLDERS:" VerticalAlignment="Top" Width="86"/>
+        <TextBlock HorizontalAlignment="Left" Margin="374,26,0,0" TextWrapping="Wrap" Name="folderNameText" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="372,47,0,0" TextWrapping="Wrap" Name="filesNumText" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="372,68,0,0" TextWrapping="Wrap" Name="subfoldersNumText" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>

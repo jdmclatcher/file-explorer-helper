@@ -23,5 +23,15 @@ namespace FileExplorerHelper
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Util utilClass = new Util();
+            utilClass.setRootPath("sdfdsf");
+            folderNameText.Text = utilClass.getRootPath();
+           //  FolderBrowse.BrowseForFolder();
+        }
+
     }
-}
+} 

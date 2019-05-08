@@ -20,17 +20,21 @@ namespace FileExplorerHelper
     /// </summary>
     public partial class MainWindow : Window
     {
+        Util utilClass; // ref to util class
+
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); // create xaml
+            utilClass = new Util(); // create instance of utility class
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Click_BrowseForFolder(object sender, RoutedEventArgs e)
         {
-            Util utilClass = new Util();
-            utilClass.setRootPath("sdfdsf");
-            folderNameText.Text = utilClass.getRootPath();
-           //  FolderBrowse.BrowseForFolder();
+            utilClass.browseAndSetFolder(); // open dialog to browse
+            folderNameText.Text = utilClass.getRootFolder().Name; // set text to name of folder
+            // set files and subfolders number
+            filesNumText.Text = utilClass.getNumFiles().ToString();
+            subfoldersNumText.Text = utilClass.getNumSubFolders().ToString();
         }
 
     }

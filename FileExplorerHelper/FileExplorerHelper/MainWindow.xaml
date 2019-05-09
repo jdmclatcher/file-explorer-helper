@@ -5,26 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileExplorerHelper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="File Explorer Helper" Height="480" Width="700"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        ResizeMode="CanMinimize">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="281,26,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" Width="102" FontWeight="Bold"/>
-        <Button Click="Click_BrowseForFolder" Content="Browse for Folder" HorizontalAlignment="Left" Margin="322,121,0,0" VerticalAlignment="Top" Width="134"/>
-        <TextBlock HorizontalAlignment="Left" Margin="281,47,0,0" TextWrapping="Wrap" Text="FILE IN FOLDER:" VerticalAlignment="Top" Width="86"/>
+        <materialDesign:Card Padding="32" Margin="16">
+            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">File Explorer Helper</TextBlock>
+        </materialDesign:Card>
+        <TextBlock HorizontalAlignment="Left" Margin="281,31,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" Width="102" FontWeight="Bold"/>
+        <Button Click="Click_BrowseForFolder" Content="Browse for Folder" HorizontalAlignment="Left" Margin="262,119,0,0" VerticalAlignment="Top" Width="175"/>
+        <TextBlock HorizontalAlignment="Left" Margin="281,52,0,0" TextWrapping="Wrap" Text="FILE IN FOLDER:" VerticalAlignment="Top" Width="102"/>
         <TextBlock HorizontalAlignment="Left" Margin="281,68,0,0" TextWrapping="Wrap" Text="SUBFOLDERS:" VerticalAlignment="Top" Width="86"/>
-        <TextBlock HorizontalAlignment="Left" Margin="374,26,0,0" TextWrapping="Wrap" Name="text_folderName" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Margin="372,47,0,0" TextWrapping="Wrap" Name="text_filesNum" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="372,68,0,0" TextWrapping="Wrap" Name="text_subFoldersNum" VerticalAlignment="Top"/>
-        <Button Name="button_cleanupFolder" IsEnabled="false" Click="Click_CleanupFolder" Content="Cleanup Folder" HorizontalAlignment="Left" Margin="150,172,0,0" VerticalAlignment="Top" Width="115"/>
-        <Button Name="button_findAndReplace" IsEnabled="false" Click="Click_FindAndReplace" Content="Find And Replace" HorizontalAlignment="Left" Margin="498,172,0,0" VerticalAlignment="Top" Width="115"/>
-        <Button Name="button_findAndRemove" IsEnabled="false" Click="Click_FindAndRemove" Content="Find And Remove" HorizontalAlignment="Left" Margin="498,293,0,0" VerticalAlignment="Top" Width="115"/>
-        <TextBox Name="input_find" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="498,209,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115"/>
-        <TextBox Name="input_replace" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="498,246,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115"/>
-        <TextBlock HorizontalAlignment="Left" Margin="467,210,0,0" TextWrapping="Wrap" Text="Find:" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="449,247,0,0" TextWrapping="Wrap" Text="Replace:" VerticalAlignment="Top"/>
-        <TextBox Name="input_remove" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="498,329,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115"/>
-        <TextBlock HorizontalAlignment="Left" Margin="449,330,0,0" TextWrapping="Wrap" Text="Remove:" VerticalAlignment="Top"/>
-        <Button Name="button_imageRename" IsEnabled="false" Click="Click_RenameImages" Content="Rename Images" HorizontalAlignment="Left" Margin="150,278,0,0" VerticalAlignment="Top" Width="115"/>
-        <ComboBox Name="input_imageRenameChoice" IsEnabled="false" HorizontalAlignment="Left" Margin="150,315,0,0" VerticalAlignment="Top" Width="115"/>
+        <TextBlock HorizontalAlignment="Left" Margin="383,31,0,0" TextWrapping="Wrap" Name="text_folderName" VerticalAlignment="Top" FontWeight="Bold" Width="282"/>
+        <TextBlock HorizontalAlignment="Left" Margin="383,52,0,0" TextWrapping="Wrap" Name="text_filesNum" VerticalAlignment="Top" Width="282"/>
+        <TextBlock HorizontalAlignment="Left" Margin="383,68,0,0" TextWrapping="Wrap" Name="text_subFoldersNum" VerticalAlignment="Top" Width="282"/>
+        <Button Name="button_cleanupFolder" IsEnabled="false" Click="Click_CleanupFolder" Content="Cleanup Folder" HorizontalAlignment="Left" Margin="111,172,0,0" VerticalAlignment="Top" Width="134"/>
+        <Button Name="button_findAndReplace" IsEnabled="false" Click="Click_FindAndReplace" Content="Find And Replace" HorizontalAlignment="Left" Margin="449,172,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button Name="button_findAndRemove" IsEnabled="false" Click="Click_FindAndRemove" Content="Find And Remove" HorizontalAlignment="Left" Margin="449,293,0,0" VerticalAlignment="Top" Width="150"/>
+        <TextBox Name="input_find" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="501,216,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="98"/>
+        <TextBox Name="input_replace" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="501,247,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="98"/>
+        <TextBlock HorizontalAlignment="Left" Margin="449,223,0,0" TextWrapping="Wrap" Text="Find:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="449,254,0,0" TextWrapping="Wrap" Text="Replace:" VerticalAlignment="Top"/>
+        <TextBox Name="input_remove" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="501,339,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="98"/>
+        <TextBlock HorizontalAlignment="Left" Margin="449,344,0,0" TextWrapping="Wrap" Text="Remove:" VerticalAlignment="Top"/>
+        <Button Name="button_imageRename" IsEnabled="false" Click="Click_RenameImages" Content="Rename Images" HorizontalAlignment="Left" Margin="111,293,0,0" VerticalAlignment="Top" Width="134"/>
+        <ComboBox Name="input_imageRenameChoice" IsEnabled="false" HorizontalAlignment="Left" Margin="65,334,0,0" VerticalAlignment="Top" Width="227"/>
 
     </Grid>
 </Window>

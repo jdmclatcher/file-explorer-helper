@@ -53,6 +53,8 @@ namespace FileExplorerHelper
 
         private void InitRenameChoices()
         {
+            // TODO - fix bug where first underscore is omitted from choice
+            input_imageRenameChoice.Items.Clear(); // clear all the choices before adding again
             // add all the choices to the combo box
             input_imageRenameChoice.Items.Add("MM.DD.YYYY");                    // 0
             input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY");         // 1

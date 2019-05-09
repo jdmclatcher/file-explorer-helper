@@ -57,6 +57,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CleanupFolder.cs" />
+    <Compile Include="File_Extensions\Videos.cs" />
+    <Compile Include="File_Extensions\Shortcuts.cs" />
+    <Compile Include="File_Extensions\Images.cs" />
+    <Compile Include="File_Extensions\Audio.cs" />
+    <Compile Include="File_Extensions\Documents.cs" />
+    <Compile Include="File_Extensions\Executables.cs" />
+    <Compile Include="FindAndRemove.cs" />
+    <Compile Include="FindAndReplace.cs" />
+    <Compile Include="ImageRename.cs" />
     <Compile Include="Util.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

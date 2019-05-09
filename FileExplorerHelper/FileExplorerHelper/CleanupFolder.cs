@@ -72,6 +72,12 @@ namespace FileExplorerHelper
                 }
 
             }
+
+            if (!foundAFile)
+            {
+                Console.WriteLine("No files were found.");
+                util.AddMessage("MESSAGE: No files were found.", 1);
+            }
             
         }
 
@@ -102,6 +108,9 @@ namespace FileExplorerHelper
             {
                 // dont move file
                 Console.WriteLine("File already exists in destination. File not moved");
+
+                // send message, 2 for a yellow warning
+                util.AddMessage("WARNING: \"" + file.Name + "\" already exists in destination. \"" + file.Name + "\" not moved.", 2);
             }
         }
 

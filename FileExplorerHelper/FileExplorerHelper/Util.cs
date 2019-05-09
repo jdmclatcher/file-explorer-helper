@@ -116,5 +116,14 @@ namespace FileExplorerHelper
             SetRootFolder(new FileInfo(Dialog.SelectedPath));
             CountFilesAndFolders(); // update file and subfolder count
         }
+
+        // adds a message to the output window
+        // severity of the message 1=gree, 2=yellow, 3=red
+        public void AddMessage(string message, int severity)
+        {
+            // create ref to main window xaml script and call function
+            MainWindow window = new MainWindow();
+            window.AddMessage(message, severity);
+        }
     }
 }

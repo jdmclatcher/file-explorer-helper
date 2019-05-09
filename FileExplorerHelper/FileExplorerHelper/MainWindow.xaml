@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileExplorerHelper"
         mc:Ignorable="d"
-        Title="File Explorer Helper" Height="480" Width="700"
+        Title="File Explorer Helper" Height="540" Width="700"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -20,7 +20,7 @@
         </materialDesign:Card>
         <TextBlock HorizontalAlignment="Left" Margin="281,31,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" Width="102" FontWeight="Bold"/>
         <Button Click="Click_BrowseForFolder" Content="Browse for Folder" HorizontalAlignment="Left" Margin="262,119,0,0" VerticalAlignment="Top" Width="175"/>
-        <TextBlock HorizontalAlignment="Left" Margin="281,52,0,0" TextWrapping="Wrap" Text="FILE IN FOLDER:" VerticalAlignment="Top" Width="102"/>
+        <TextBlock HorizontalAlignment="Left" Margin="281,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="FILE IN FOLDER:"/>
         <TextBlock HorizontalAlignment="Left" Margin="281,68,0,0" TextWrapping="Wrap" Text="SUBFOLDERS:" VerticalAlignment="Top" Width="86"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,31,0,0" TextWrapping="Wrap" Name="text_folderName" VerticalAlignment="Top" FontWeight="Bold" Width="282"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,52,0,0" TextWrapping="Wrap" Name="text_filesNum" VerticalAlignment="Top" Width="282"/>
@@ -36,6 +36,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="449,344,0,0" TextWrapping="Wrap" Text="Remove:" VerticalAlignment="Top"/>
         <Button Name="button_imageRename" IsEnabled="false" Click="Click_RenameImages" Content="Rename Images" HorizontalAlignment="Left" Margin="111,293,0,0" VerticalAlignment="Top" Width="134"/>
         <ComboBox Name="input_imageRenameChoice" IsEnabled="false" HorizontalAlignment="Left" Margin="65,334,0,0" VerticalAlignment="Top" Width="227"/>
+        <TextBlock Name="text_output" HorizontalAlignment="Left" Margin="16,405,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="78" Width="649"/>
 
     </Grid>
 </Window>

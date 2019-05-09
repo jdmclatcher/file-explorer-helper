@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace FileExplorerHelper
 {
@@ -56,30 +58,33 @@ namespace FileExplorerHelper
             // TODO - fix bug where first underscore is omitted from choice
             input_imageRenameChoice.Items.Clear(); // clear all the choices before adding again
             // add all the choices to the combo box
-            input_imageRenameChoice.Items.Add("MM.DD.YYYY");                    // 0
-            input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY");         // 1
-            input_imageRenameChoice.Items.Add("MM_DD_YYYY");                    // 2
-            input_imageRenameChoice.Items.Add("[FILETYPE]_MM_DD_YYYY");         // 3
-            input_imageRenameChoice.Items.Add("MM_DD_YYYY - HHMM");             // 4
-            input_imageRenameChoice.Items.Add("[FILETYPE]_MM_DD_YYYY - HHMM");  // 5
-            input_imageRenameChoice.Items.Add("MM.DD.YYYY - HHMM");             // 6
-            input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY - HHMM");  // 7
+            // add an extra "_" to account for label truncation of first underscore
+            input_imageRenameChoice.Items.Add("MM.DD.YYYY");                     // 0
+            input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY");          // 1
+            input_imageRenameChoice.Items.Add("MM__DD_YYYY");                    // 2
+            input_imageRenameChoice.Items.Add("[FILETYPE]__MM_DD_YYYY");         // 3
+            input_imageRenameChoice.Items.Add("MM__DD_YYYY - HHMM");             // 4
+            input_imageRenameChoice.Items.Add("[FILETYPE]__MM_DD_YYYY - HHMM");  // 5
+            input_imageRenameChoice.Items.Add("MM.DD.YYYY - HHMM");              // 6
+            input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY - HHMM");   // 7
         }
 
         // called from cleanup folder button
         private void Click_CleanupFolder(object sender, RoutedEventArgs e)
         {
-            if (!utilClass.GetRootFolder().Exists)
-            {
-                Console.WriteLine("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.");
-            }
-            else
-            {
+            // TODO - fix this
+            //if (!utilClass.GetRootFolder().Exists)
+            //{
+            //    Console.WriteLine("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.");
+            //    AddMessage("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.", 3);
+            //}
+            //else
+            //{
                 // create instance of the Cleanup Folder class and call function on it
                 CleanupFolder folderCleanup = new CleanupFolder(utilClass); // pass in the util class
                 folderCleanup.Cleanup();
                 UpdateTexts();
-            }
+            // }
             
         }
 
@@ -91,6 +96,7 @@ namespace FileExplorerHelper
             if (input_find.Text.Equals(null) || input_replace.Text.Equals(null) || input_find.Text.Equals("") || input_replace.Text.Equals(""))
             {
                 Console.WriteLine("Please provide input");
+                AddMessage("ERROR: No input provided. Please enter text to find and replace.", 3);
             }
             else
             {
@@ -108,6 +114,7 @@ namespace FileExplorerHelper
             if (input_remove.Text.Equals(null))
             {
                 Console.WriteLine("Please provide input");
+                AddMessage("ERROR: No input provided. Please enter text to find and remove.", 3);
             }
             else
             {
@@ -125,11 +132,37 @@ namespace FileExplorerHelper
             if(choice == -1)
             {
                 Console.WriteLine("No option selected. Please select an option.");
+                AddMessage("ERROR: No option selected. Please select an option.", 3);
             }
             else
             {
                 imageRenamer.RenameImages(choice);
             }
+        }
+
+        public void AddMessage(string message, int severity)
+        {
+            Console.WriteLine("hello??");
+            // change text color based on message severity
+            // 1 = green (MESSAGE), 2 = yellow (WARNING), 3 = red (ERROR)
+            switch (severity)
+            {
+                case 1:
+                    text_output.Foreground = Brushes.Green;
+                    break;
+                case 2:
+                    text_output.Foreground = Brushes.Yellow;
+                    break;
+                case 3:
+                    text_output.Foreground = Brushes.Red;
+                    break;
+                default:
+                    text_output.Foreground = Brushes.Black;
+                    break;
+            }
+            
+            text_output.Text = message;
+            
         }
 
     }

@@ -53,10 +53,12 @@ namespace FileExplorerHelper
             if(numChanged == 0)
             {
                 Console.WriteLine("No files were renamed.");
+                util.AddMessage("MESSAGE: Rename complete. No files were renamed.", 1);
             }
             else
             {
                 Console.WriteLine(numChanged + " file(s) were renamed.");
+                util.AddMessage("MESSAGE: Rename complete. " + numChanged + " file(s) were renamed.", 1);
             }
 
         }
@@ -71,6 +73,7 @@ namespace FileExplorerHelper
                 SetDuplicateCount(GetDuplicateCount() + 1); // add 1 to current duplicate count
                 // then rename file
                 file.MoveTo(util.GetRootFolder() + "/" + NewFileName(file, choice, type) + "(" + GetDuplicateCount() + ")" + file.Extension);
+                Console.WriteLine("File already exists in destination.");
             }
             // if not, rename normally
             else
@@ -78,7 +81,6 @@ namespace FileExplorerHelper
                 SetDuplicateCount(0); // reset duplicate count
                 // rename file
                 file.MoveTo(util.GetRootFolder() + "/" + NewFileName(file, choice, type) + file.Extension);
-                Console.WriteLine("File already exists in destination.");
             }
         }
 

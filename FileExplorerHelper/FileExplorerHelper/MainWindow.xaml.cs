@@ -20,16 +20,29 @@ namespace FileExplorerHelper
         {
             InitializeComponent(); // create xaml
             utilClass = new Util(); // create instance of utility class
-            
+        }
+
+        public void SetText(string message)
+        {
+            text_output.Text = message;
         }
 
         private void Click_BrowseForFolder(object sender, RoutedEventArgs e)
         {
             utilClass.BrowseAndSelectFolder(); // open dialog to browse
 
-            UpdateTexts(); // update text boxes of data
-            EnableContent(); // enable the default disbaled buttons and content
-            InitRenameChoices(); // set up the renaming choices for image rename
+            if (utilClass.GetCanUseFunctions())
+            {
+                UpdateTexts(); // update text boxes of data
+                EnableContent(); // enable the default disbaled buttons and content
+                InitRenameChoices(); // set up the renaming choices for image 
+                ResetMessage();
+            }
+            else
+            {
+                // provide message
+                AddMessageWindow("WARNING: No folder was selected. Please select a folder.", 2);
+            }
         }
 
         private void EnableContent()
@@ -42,6 +55,7 @@ namespace FileExplorerHelper
             input_replace.IsEnabled = true;
             button_imageRename.IsEnabled = true;
             input_imageRenameChoice.IsEnabled = true;
+            button_printDetails.IsEnabled = true;
         }
 
         private void UpdateTexts()
@@ -58,13 +72,12 @@ namespace FileExplorerHelper
             // TODO - fix bug where first underscore is omitted from choice
             input_imageRenameChoice.Items.Clear(); // clear all the choices before adding again
             // add all the choices to the combo box
-            // add an extra "_" to account for label truncation of first underscore
             input_imageRenameChoice.Items.Add("MM.DD.YYYY");                     // 0
             input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY");          // 1
-            input_imageRenameChoice.Items.Add("MM__DD_YYYY");                    // 2
-            input_imageRenameChoice.Items.Add("[FILETYPE]__MM_DD_YYYY");         // 3
-            input_imageRenameChoice.Items.Add("MM__DD_YYYY - HHMM");             // 4
-            input_imageRenameChoice.Items.Add("[FILETYPE]__MM_DD_YYYY - HHMM");  // 5
+            input_imageRenameChoice.Items.Add("MM_DD_YYYY");                     // 2
+            input_imageRenameChoice.Items.Add("[FILETYPE]_MM_DD_YYYY");          // 3
+            input_imageRenameChoice.Items.Add("MM_DD_YYYY - HHMM");              // 4
+            input_imageRenameChoice.Items.Add("[FILETYPE]_MM_DD_YYYY - HHMM");   // 5
             input_imageRenameChoice.Items.Add("MM.DD.YYYY - HHMM");              // 6
             input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY - HHMM");   // 7
         }
@@ -72,19 +85,21 @@ namespace FileExplorerHelper
         // called from cleanup folder button
         private void Click_CleanupFolder(object sender, RoutedEventArgs e)
         {
-            // TODO - fix this
-            //if (!utilClass.GetRootFolder().Exists)
-            //{
-            //    Console.WriteLine("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.");
-            //    AddMessage("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.", 3);
-            //}
-            //else
-            //{
+            utilClass.GetRootFolder().Refresh(); // refresh info of root folder
+            if (!utilClass.GetRootFolder().Exists)
+            {
+                Console.WriteLine("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.");
+                AddMessageWindow("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.", 2);
+                Console.WriteLine(utilClass.GetRootFolder());
+            }
+            else
+            {
                 // create instance of the Cleanup Folder class and call function on it
                 CleanupFolder folderCleanup = new CleanupFolder(utilClass); // pass in the util class
                 folderCleanup.Cleanup();
                 UpdateTexts();
-            // }
+                Console.WriteLine(utilClass.GetRootFolder());
+            }
             
         }
 
@@ -96,7 +111,7 @@ namespace FileExplorerHelper
             if (input_find.Text.Equals(null) || input_replace.Text.Equals(null) || input_find.Text.Equals("") || input_replace.Text.Equals(""))
             {
                 Console.WriteLine("Please provide input");
-                AddMessage("ERROR: No input provided. Please enter text to find and replace.", 3);
+                AddMessageWindow("ERROR: No input provided. Please enter text to find and replace.", 2);
             }
             else
             {
@@ -111,10 +126,10 @@ namespace FileExplorerHelper
         private void Click_FindAndRemove(object sender, RoutedEventArgs e)
         {
             FindAndRemove findAndRemove = new FindAndRemove(utilClass);
-            if (input_remove.Text.Equals(null))
+            if (input_remove.Text.Equals(null) || input_remove.Text.Equals(""))
             {
                 Console.WriteLine("Please provide input");
-                AddMessage("ERROR: No input provided. Please enter text to find and remove.", 3);
+                AddMessageWindow("ERROR: No input provided. Please enter text to find and remove.", 2);
             }
             else
             {
@@ -132,7 +147,7 @@ namespace FileExplorerHelper
             if(choice == -1)
             {
                 Console.WriteLine("No option selected. Please select an option.");
-                AddMessage("ERROR: No option selected. Please select an option.", 3);
+                AddMessageWindow("ERROR: No option selected. Please select an option.", 2);
             }
             else
             {
@@ -140,29 +155,39 @@ namespace FileExplorerHelper
             }
         }
 
-        public void AddMessage(string message, int severity)
+        public void Click_PrintDetails(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("hello??");
+            // function that will print out all the files to a .txt file
+            utilClass.PrintDetails();
+            AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "/" + utilClass.detailsFilesName + ".txt\"", 1);
+        }
+
+        public void AddMessageWindow(string message, int severity)
+        {
             // change text color based on message severity
-            // 1 = green (MESSAGE), 2 = yellow (WARNING), 3 = red (ERROR)
+            // 1 = green (MESSAGE), 2 = red (ERROR)
             switch (severity)
             {
                 case 1:
                     text_output.Foreground = Brushes.Green;
                     break;
                 case 2:
-                    text_output.Foreground = Brushes.Yellow;
-                    break;
-                case 3:
                     text_output.Foreground = Brushes.Red;
                     break;
                 default:
                     text_output.Foreground = Brushes.Black;
                     break;
             }
-            
-            text_output.Text = message;
-            
+
+            // change font
+            text_output.FontFamily = new FontFamily("Consolas");
+            text_output.Text = message; 
+        }
+
+        // set output text to nothing
+        public void ResetMessage()
+        {
+            text_output.Text = "";
         }
 
     }

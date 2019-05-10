@@ -20,23 +20,25 @@
         </materialDesign:Card>
         <TextBlock HorizontalAlignment="Left" Margin="281,31,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" Width="102" FontWeight="Bold"/>
         <Button Click="Click_BrowseForFolder" Content="Browse for Folder" HorizontalAlignment="Left" Margin="262,119,0,0" VerticalAlignment="Top" Width="175"/>
-        <TextBlock HorizontalAlignment="Left" Margin="281,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="FILE IN FOLDER:"/>
-        <TextBlock HorizontalAlignment="Left" Margin="281,68,0,0" TextWrapping="Wrap" Text="SUBFOLDERS:" VerticalAlignment="Top" Width="86"/>
+        <TextBlock HorizontalAlignment="Left" Margin="281,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="File(s) In Folder:"/>
+        <TextBlock HorizontalAlignment="Left" Margin="281,68,0,0" TextWrapping="Wrap" Text="Sub-Folders" VerticalAlignment="Top" Width="86"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,31,0,0" TextWrapping="Wrap" Name="text_folderName" VerticalAlignment="Top" FontWeight="Bold" Width="282"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,52,0,0" TextWrapping="Wrap" Name="text_filesNum" VerticalAlignment="Top" Width="282"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,68,0,0" TextWrapping="Wrap" Name="text_subFoldersNum" VerticalAlignment="Top" Width="282"/>
         <Button Name="button_cleanupFolder" IsEnabled="false" Click="Click_CleanupFolder" Content="Cleanup Folder" HorizontalAlignment="Left" Margin="111,172,0,0" VerticalAlignment="Top" Width="134"/>
         <Button Name="button_findAndReplace" IsEnabled="false" Click="Click_FindAndReplace" Content="Find And Replace" HorizontalAlignment="Left" Margin="449,172,0,0" VerticalAlignment="Top" Width="150"/>
         <Button Name="button_findAndRemove" IsEnabled="false" Click="Click_FindAndRemove" Content="Find And Remove" HorizontalAlignment="Left" Margin="449,293,0,0" VerticalAlignment="Top" Width="150"/>
-        <TextBox Name="input_find" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="501,216,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="98"/>
-        <TextBox Name="input_replace" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="501,247,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="98"/>
+        <TextBox Name="input_find" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="513,216,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="86"/>
+        <TextBox Name="input_replace" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="513,247,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="86"/>
         <TextBlock HorizontalAlignment="Left" Margin="449,223,0,0" TextWrapping="Wrap" Text="Find:" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="449,254,0,0" TextWrapping="Wrap" Text="Replace:" VerticalAlignment="Top"/>
-        <TextBox Name="input_remove" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="501,339,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="98"/>
+        <TextBox Name="input_remove" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="513,339,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="86"/>
         <TextBlock HorizontalAlignment="Left" Margin="449,344,0,0" TextWrapping="Wrap" Text="Remove:" VerticalAlignment="Top"/>
         <Button Name="button_imageRename" IsEnabled="false" Click="Click_RenameImages" Content="Rename Images" HorizontalAlignment="Left" Margin="111,293,0,0" VerticalAlignment="Top" Width="134"/>
         <ComboBox Name="input_imageRenameChoice" IsEnabled="false" HorizontalAlignment="Left" Margin="65,334,0,0" VerticalAlignment="Top" Width="227"/>
-        <TextBlock Name="text_output" HorizontalAlignment="Left" Margin="16,405,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="78" Width="649"/>
+        <TextBlock Name="text_output" HorizontalAlignment="Left" Margin="16,405,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="36" Width="662"/>
+        <Label Content="Output" HorizontalAlignment="Left" Margin="328,379,0,0" VerticalAlignment="Top" Width="55"/>
+        <Button Name="button_printDetails" IsEnabled="false" Click="Click_PrintDetails" Content="Print Details" HorizontalAlignment="Left" Margin="293,456,0,22" Width="113" Height="Auto"/>
 
     </Grid>
 </Window>

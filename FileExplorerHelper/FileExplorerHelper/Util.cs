@@ -18,17 +18,19 @@ namespace FileExplorerHelper
     public class Util
     { 
         // create a variable to hold data about root folder
-        private FileInfo rootFolder;
+        private DirectoryInfo rootFolder;
 
         private int subFolderCount;
         private int fileCount;
+        private bool canUseFunctions = true; // can use the functions of the program
+        public string detailsFilesName = "Files_Details";
         #region Constructor and Getters/Setters
-        public FileInfo GetRootFolder()
+        public DirectoryInfo GetRootFolder()
         {
             return this.rootFolder;
         }
 
-        public void SetRootFolder(FileInfo rootFolder)
+        public void SetRootFolder(DirectoryInfo rootFolder)
         {
             this.rootFolder = rootFolder;
         }
@@ -49,6 +51,11 @@ namespace FileExplorerHelper
         private void SetNumFiles(int fileCount)
         {
             this.fileCount = fileCount;
+        }
+
+        public bool GetCanUseFunctions()
+        {
+            return this.canUseFunctions;
         }
         #endregion
 
@@ -84,7 +91,6 @@ namespace FileExplorerHelper
                     files.RemoveAt(i);
                 }
             }
-
             return files; 
         }
 
@@ -107,23 +113,44 @@ namespace FileExplorerHelper
         public void BrowseAndSelectFolder()
         {
             FolderBrowserDialog Dialog = new FolderBrowserDialog();
-            while (Dialog.ShowDialog() != DialogResult.OK)
+
+
+            Dialog.ShowDialog(); // pop up window
+
+            if((Dialog.SelectedPath == null) || (Dialog.SelectedPath == ""))
             {
-                Dialog.Reset();
+                this.canUseFunctions = false; // restrict access to functions until proper folder selected
             }
-            ;
-            // sets the root folder to the selected folder
-            SetRootFolder(new FileInfo(Dialog.SelectedPath));
-            CountFilesAndFolders(); // update file and subfolder count
+            else
+            {
+                this.canUseFunctions = true; // dont restrict user access
+                // sets the root folder to the selected folder
+                SetRootFolder(new DirectoryInfo(Dialog.SelectedPath));
+                CountFilesAndFolders(); // update file and subfolder count
+            }
+
+            Dialog.Reset();
         }
 
         // adds a message to the output window
-        // severity of the message 1=gree, 2=yellow, 3=red
         public void AddMessage(string message, int severity)
         {
+            // TODO - fix this
             // create ref to main window xaml script and call function
             MainWindow window = new MainWindow();
-            window.AddMessage(message, severity);
+            window.AddMessageWindow(message, severity);
+        }
+
+        public void PrintDetails()
+        {
+            // print out all paths of all files in folder to one .txt file
+            // new blank string array of the same size as the number of files
+            string[] paths = new string[GetListOfFiles().Count]; 
+            for(int i = 0; i < GetListOfFiles().Count; i++)
+            {
+                paths[i] = GetListOfFiles()[i].FullName;
+            }
+            File.WriteAllLines(GetRootFolder().FullName + "/" + detailsFilesName + ".txt", paths);
         }
     }
 }

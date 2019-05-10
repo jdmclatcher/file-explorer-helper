@@ -38,7 +38,7 @@
         <ComboBox Name="input_imageRenameChoice" IsEnabled="false" HorizontalAlignment="Left" Margin="65,334,0,0" VerticalAlignment="Top" Width="227"/>
         <TextBlock Name="text_output" HorizontalAlignment="Left" Margin="16,405,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="36" Width="662"/>
         <Label Content="Output" HorizontalAlignment="Left" Margin="328,379,0,0" VerticalAlignment="Top" Width="55"/>
-        <Button Name="button_printDetails" IsEnabled="false" Click="Click_PrintDetails" Content="Print Details" HorizontalAlignment="Left" Margin="293,456,0,22" Width="113" Height="Auto"/>
+        <Button Name="button_printDetails" IsEnabled="false" Click="Click_PrintDetails" Content="Print Details" HorizontalAlignment="Left" Margin="293,458,0,0" Width="113" Height="26" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

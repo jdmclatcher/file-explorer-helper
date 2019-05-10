@@ -12,6 +12,7 @@ namespace FileExplorerHelper
     {
         private Util util;
         private int duplicateCount; // number of duplicate files (append a ({num}) to )
+        private int numChanged; // number of files renamed
         public ImageRename(Util utilClass)
         {
             util = utilClass;
@@ -26,41 +27,38 @@ namespace FileExplorerHelper
             this.duplicateCount = duplicateCount;
         }
 
+        public int GetNumChanged()
+        {
+            return this.numChanged;
+        }
+        private void SetNumChanged(int numChanged)
+        {
+            this.numChanged = numChanged;
+        }
+
         public void RenameImages(int choice)
         {
-            int numChanged = 0;
             SetDuplicateCount(0);
             // get a list of the files
             List<FileInfo> files = util.GetListOfFiles();
             for(int i = 0; i < files.Count; i++)
             {
-                if(files[i].Name.Substring(0, 3).Equals("IMG"))
+                if(files[i].Name.Substring(0, 4).Equals("IMG_"))
                 {
                     RenameHelper(files[i], choice, "IMG");
-                    numChanged++;
+                    SetNumChanged(GetNumChanged() + 1);
                 }
-                else if(files[i].Name.Substring(0, 3).Equals("VID"))
+                else if(files[i].Name.Substring(0, 4).Equals("VID_"))
                 {
                     RenameHelper(files[i], choice, "VID");
-                    numChanged++;
+                    SetNumChanged(GetNumChanged() + 1);
                 }
-                else if(files[i].Name.Substring(0, 4).Equals("PANO"))
+                else if(files[i].Name.Substring(0, 5).Equals("PANO_"))
                 {
                     RenameHelper(files[i], choice, "PANO");
-                    numChanged++;
+                    SetNumChanged(GetNumChanged() + 1);
                 }
             }
-            if(numChanged == 0)
-            {
-                Console.WriteLine("No files were renamed.");
-                util.AddMessage("MESSAGE: Rename complete. No files were renamed.", 1);
-            }
-            else
-            {
-                Console.WriteLine(numChanged + " file(s) were renamed.");
-                util.AddMessage("MESSAGE: Rename complete. " + numChanged + " file(s) were renamed.", 1);
-            }
-
         }
 
         private void RenameHelper(FileInfo file, int choice, string type)
@@ -128,26 +126,26 @@ namespace FileExplorerHelper
                     // change to MM.DD.YYYY
                     return month + "." + day + "." + year;
                 case 1:
-                    // change to [FILETYPE].MM.DD.YYY
-                    return type + "." + month + "." + day + "." + year;
+                    // change to [FILETYPE] - MM.DD.YYY
+                    return type + " - " + month + "." + day + "." + year;
                 case 2:
-                    // change to MM_DD_YYYY
-                    return month + "_" + day + "_" + year;
+                    // change to MMDDYYYY
+                    return month + day + year;
                 case 3:
-                    // change to [FILETYPE]_MM_DD_YYYY
-                    return type + "_" + month + "_" + day + "_" + year;
+                    // change to [FILETYPE] - MMDDYYYY
+                    return type + " - " + month + day + year;
                 case 4:
-                    // change to MM_DD_YYYY - HH MM
-                    return month + "_" + day + "_" + year + " - " + newHourStr + min;
+                    // change to MMDDYYYY - HHMM
+                    return month + day + year + " - " + newHourStr + min;
                 case 5:
-                    // change to [FILETYPE]_MM_DD_YYYY - HHMM
-                    return type + "_" + month + "_" + day + "_" + year + " - " + newHourStr + min;
+                    // change to [FILETYPE] - MMDDYYYY - HHMM
+                    return type + " - " + month + day + year + " - " + newHourStr + min;
                 case 6:
                     // change to MM.DD.YYYY - HH MM
                     return month + "." + day + "." + year + " - " + newHourStr + min;
                 case 7:
-                    // change to [FILETYPE].MM.DD.YYYY - HHMM
-                    return type + "." + month + "." + day + "." + year + " - " + newHourStr + min;
+                    // change to [FILETYPE] - MM.DD.YYYY - HHMM
+                    return type + " - " + month + "." + day + "." + year + " - " + newHourStr + min;
                 default:
                     // return default name if anything else (without the extension) 
                     return Path.GetFileNameWithoutExtension(file.Name);

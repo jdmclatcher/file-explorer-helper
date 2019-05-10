@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace FileExplorerHelper
 
         private void Click_BrowseForFolder(object sender, RoutedEventArgs e)
         {
+            ResetMessage();
             utilClass.BrowseAndSelectFolder(); // open dialog to browse
 
             if (utilClass.GetCanUseFunctions())
@@ -69,28 +71,28 @@ namespace FileExplorerHelper
 
         private void InitRenameChoices()
         {
-            // TODO - fix bug where first underscore is omitted from choice
+            // TODO - finalize these options
             input_imageRenameChoice.Items.Clear(); // clear all the choices before adding again
             // add all the choices to the combo box
             input_imageRenameChoice.Items.Add("MM.DD.YYYY");                     // 0
-            input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY");          // 1
-            input_imageRenameChoice.Items.Add("MM_DD_YYYY");                     // 2
-            input_imageRenameChoice.Items.Add("[FILETYPE]_MM_DD_YYYY");          // 3
-            input_imageRenameChoice.Items.Add("MM_DD_YYYY - HHMM");              // 4
-            input_imageRenameChoice.Items.Add("[FILETYPE]_MM_DD_YYYY - HHMM");   // 5
+            input_imageRenameChoice.Items.Add("[FILETYPE] - MM.DD.YYYY");        // 1
+            input_imageRenameChoice.Items.Add("MMDDYYYY");                       // 2
+            input_imageRenameChoice.Items.Add("[FILETYPE] - MMDDYYYY");          // 3
+            input_imageRenameChoice.Items.Add("MMDDYYYY - HHMM");                // 4
+            input_imageRenameChoice.Items.Add("[FILETYPE] - MMDDYYYY - HHMM");   // 5
             input_imageRenameChoice.Items.Add("MM.DD.YYYY - HHMM");              // 6
-            input_imageRenameChoice.Items.Add("[FILETYPE].MM.DD.YYYY - HHMM");   // 7
+            input_imageRenameChoice.Items.Add("[FILETYPE] - MM.DD.YYYY - HHMM"); // 7
         }
 
         // called from cleanup folder button
         private void Click_CleanupFolder(object sender, RoutedEventArgs e)
         {
+            ResetMessage();
             utilClass.GetRootFolder().Refresh(); // refresh info of root folder
             if (!utilClass.GetRootFolder().Exists)
             {
                 Console.WriteLine("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.");
                 AddMessageWindow("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.", 2);
-                Console.WriteLine(utilClass.GetRootFolder());
             }
             else
             {
@@ -98,7 +100,8 @@ namespace FileExplorerHelper
                 CleanupFolder folderCleanup = new CleanupFolder(utilClass); // pass in the util class
                 folderCleanup.Cleanup();
                 UpdateTexts();
-                Console.WriteLine(utilClass.GetRootFolder());
+                Console.WriteLine("MESSAGE: Cleanup complete. All valid files were sorted.");
+                AddMessageWindow("MESSAGE: Cleanup complete. All valid files were sorted.", 1);
             }
             
         }
@@ -106,6 +109,7 @@ namespace FileExplorerHelper
         // called from find and replace button
         private void Click_FindAndReplace(object sender, RoutedEventArgs e)
         {
+            ResetMessage();
             FindAndReplace findAndReplace = new FindAndReplace(utilClass);
             // check if there is input, and distribute it accordingly
             if (input_find.Text.Equals(null) || input_replace.Text.Equals(null) || input_find.Text.Equals("") || input_replace.Text.Equals(""))
@@ -116,6 +120,7 @@ namespace FileExplorerHelper
             else
             {
                 findAndReplace.FindAndReplaceFiles(input_find.Text, input_replace.Text);
+                AddMessageWindow("MESSAGE: All instances of \"" + input_find.Text + "\" were replaced with \"" + input_replace.Text + "\" in all files.", 1);
                 // then clear the text fields
                 input_find.Clear();
                 input_replace.Clear();
@@ -125,6 +130,7 @@ namespace FileExplorerHelper
 
         private void Click_FindAndRemove(object sender, RoutedEventArgs e)
         {
+            ResetMessage();
             FindAndRemove findAndRemove = new FindAndRemove(utilClass);
             if (input_remove.Text.Equals(null) || input_remove.Text.Equals(""))
             {
@@ -134,6 +140,7 @@ namespace FileExplorerHelper
             else
             {
                 findAndRemove.FindAndRemoveFiles(input_remove.Text);
+                AddMessageWindow("MESSAGE: All instances of \"" + input_remove.Text + "\" were removed in all files.", 1);
                 // then clear the text field
                 input_remove.Clear();
             }
@@ -142,6 +149,7 @@ namespace FileExplorerHelper
 
         private void Click_RenameImages(object sender, RoutedEventArgs e)
         {
+            ResetMessage();
             ImageRename imageRenamer = new ImageRename(utilClass);
             int choice = input_imageRenameChoice.SelectedIndex;
             if(choice == -1)
@@ -152,14 +160,42 @@ namespace FileExplorerHelper
             else
             {
                 imageRenamer.RenameImages(choice);
+                if (imageRenamer.GetNumChanged() == 0)
+                {
+                    Console.WriteLine("No files were renamed.");
+                    AddMessageWindow("MESSAGE: Rename complete. No files were renamed.", 1);
+                }
+                else
+                {
+                    Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
+                    AddMessageWindow("MESSAGE: Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
+                }
             }
+
         }
 
         public void Click_PrintDetails(object sender, RoutedEventArgs e)
         {
-            // function that will print out all the files to a .txt file
-            utilClass.PrintDetails();
-            AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "/" + utilClass.detailsFilesName + ".txt\"", 1);
+            ResetMessage();
+
+            // check if that file already exits
+            if (new FileInfo(utilClass.GetRootFolder().FullName + "/" + utilClass.detailsFilesName + ".txt").Exists)
+            {
+                // and prompt an override
+                if (MessageBox.Show("File \"" + utilClass.detailsFilesName +  "\" already exists. Would you like to overwrite it.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                {
+                    // cancel
+                    return;
+                }
+                else
+                {
+                    // proceed
+                    // function that will print out all the files to a .txt file
+                    utilClass.PrintDetails();
+                    AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "/" + utilClass.detailsFilesName + ".txt\"", 1);
+                }
+            }
+
         }
 
         public void AddMessageWindow(string message, int severity)

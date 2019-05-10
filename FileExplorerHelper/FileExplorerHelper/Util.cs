@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Windows;
 
 namespace FileExplorerHelper
 {
@@ -130,15 +131,6 @@ namespace FileExplorerHelper
             }
 
             Dialog.Reset();
-        }
-
-        // adds a message to the output window
-        public void AddMessage(string message, int severity)
-        {
-            // TODO - fix this
-            // create ref to main window xaml script and call function
-            MainWindow window = new MainWindow();
-            window.AddMessageWindow(message, severity);
         }
 
         public void PrintDetails()

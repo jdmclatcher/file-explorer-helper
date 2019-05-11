@@ -43,22 +43,28 @@ namespace FileExplorerHelper
             List<FileInfo> files = util.GetListOfFiles();
             for(int i = 0; i < files.Count; i++)
             {
-                if(files[i].Name.Substring(0, 4).Equals("IMG_"))
+                if (files[i].Name.Substring(0, 4).Equals("IMG_") && checkNumeric(files[i], 4))
                 {
                     RenameHelper(files[i], choice, "IMG");
                     SetNumChanged(GetNumChanged() + 1);
                 }
-                else if(files[i].Name.Substring(0, 4).Equals("VID_"))
+                else if(files[i].Name.Substring(0, 4).Equals("VID_") && checkNumeric(files[i], 4))
                 {
                     RenameHelper(files[i], choice, "VID");
                     SetNumChanged(GetNumChanged() + 1);
                 }
-                else if(files[i].Name.Substring(0, 5).Equals("PANO_"))
+                else if(files[i].Name.Substring(0, 5).Equals("PANO_") && checkNumeric(files[i], 5))
                 {
                     RenameHelper(files[i], choice, "PANO");
                     SetNumChanged(GetNumChanged() + 1);
                 }
             }
+        }
+
+        private bool checkNumeric(FileInfo file, int startIndex)
+        {
+            // return true if the exact scheme - so only modifies files using convention
+            return file.Name.Substring(startIndex, 8).All(char.IsDigit) && file.Name.Substring(startIndex + 9, 4).All(char.IsDigit);
         }
 
         private void RenameHelper(FileInfo file, int choice, string type)
@@ -70,7 +76,7 @@ namespace FileExplorerHelper
                 // update duplicate count
                 SetDuplicateCount(GetDuplicateCount() + 1); // add 1 to current duplicate count
                 // then rename file
-                file.MoveTo(util.GetRootFolder() + "/" + NewFileName(file, choice, type) + "(" + GetDuplicateCount() + ")" + file.Extension);
+                file.MoveTo(util.GetRootFolder() + "/" + NewFileName(file, choice, type) + " (" + GetDuplicateCount() + ")" + file.Extension);
                 Console.WriteLine("File already exists in destination.");
             }
             // if not, rename normally

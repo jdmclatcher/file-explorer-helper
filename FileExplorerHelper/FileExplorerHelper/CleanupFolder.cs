@@ -84,7 +84,6 @@ namespace FileExplorerHelper
         private void CleanupHelper(FileInfo file, string folderName)
         {
             // change the path of the file to be path with new folder
-
             // create new folder (Directory) to place file in (if not already created)
             if(!Directory.Exists(util.GetRootFolder() + "/" + folderName))
             {
@@ -109,8 +108,8 @@ namespace FileExplorerHelper
                 Console.WriteLine("File already exists in destination. File not moved");
 
                 // send message, 2 for a yellow warning
-                // TODO - get this to post in output
-                Console.WriteLine("WARNING: \"" + file.Name + "\" already exists in destination. \"" + file.Name + "\" not moved.", 2);
+                Console.WriteLine("WARNING: A file \"" + file.Name + "\" already exists in destination. \"" + file.Name + "\" not moved.", 2);
+                util.AddMessage("WARNING: A file \"" + file.Name + "\" already exists in destination. \"" + file.Name + "\" not moved.", 2);
             }
         }
 

@@ -95,19 +95,6 @@ namespace FileExplorerHelper
             return files; 
         }
 
-        public void ReplaceAllFiles(string toRemove, string toReplace)
-        {
-            List<FileInfo> files = GetListOfFiles(); // get all files
-            // loop through and apply changes/replacements
-            for(int i = 0; i < files.Count; i++)
-            {
-                // apply replacements to moved file
-                // by replacing any instances of the string with another string
-                // (excluding the file extension itself)
-                files[i].MoveTo(GetRootFolder() + "/" + files[i].Name.Substring(0, files[i].Name.LastIndexOf(".")).Replace(toRemove, toReplace) + files[i].Extension);
-            }
-        }
-
         #endregion
 
         // function that opens dialog to prompt input of desired folder
@@ -143,6 +130,12 @@ namespace FileExplorerHelper
                 paths[i] = GetListOfFiles()[i].FullName;
             }
             File.WriteAllLines(GetRootFolder().FullName + "/" + detailsFilesName + ".txt", paths);
+        }
+
+        public void AddMessage(string message, int severity)
+        {
+            MainWindow mainWindow = (MainWindow)System.Windows.Application.Current.MainWindow;
+            mainWindow.AddMessageWindow(message, severity);
         }
     }
 }

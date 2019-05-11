@@ -38,11 +38,13 @@ The output window will provide you will helpful status messages or warnings as y
 
 The "Print Details" button will print out specific details about the current folder in a .txt file. This file will be created in the folder that you selected with the "Browse for Folder" button.
 
-## Info
+## Other Info
 
 Please feel free to download this project and use it however you would like!
 This project is still in development, so reporting any bugs would be greatly appreciated.
 Thank you!
+
+NOTE: This program has permission to access and modify your file names completely. This could result in file corruption. Use at your own risk.
 
 ## Credits
 

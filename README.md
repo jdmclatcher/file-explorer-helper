@@ -44,7 +44,7 @@ Please feel free to download this project and use it however you would like!
 This project is still in development, so reporting any bugs would be greatly appreciated.
 Thank you!
 
-NOTE: This program has permission to access and modify your file names completely. This could result in file corruption. Use at your own risk.
+NOTE: This program has permission to access and modify file names completely. This could result in file corruption. Use at your own risk.
 
 ## Credits
 

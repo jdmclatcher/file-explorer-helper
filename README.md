@@ -4,6 +4,10 @@
 
 This tool is an unofficial add-on for the Windows File Explorer. It interacts completely independently from the Windows File Explorer, but adds useful features that are currently not present in Windows.
 
+## How to Open
+
+Download the repository and unzip the folder. Then, click on the shortcut called "File Explorer Helper" to run the program.
+
 ## Features
 
 To begin the using the features of the File Explorer Helper, you must select a folder to modify files in using the "Browse for Folder" button.
@@ -34,7 +38,15 @@ The output window will provide you will helpful status messages or warnings as y
 
 The "Print Details" button will print out specific details about the current folder in a .txt file. This file will be created in the folder that you selected with the "Browse for Folder" button.
 
-## Info
+## Other Info
 
 Please feel free to download this project and use it however you would like!
+This project is still in development, so reporting any bugs would be greatly appreciated.
 Thank you!
+
+NOTE: This program has permission to access and modify file names completely. This could result in file corruption. Use at your own risk.
+
+## Credits
+
+"Material Design in XAML" was used to style the program.
+Check it out [here](http://materialdesigninxaml.net/, "Material Design in XAML")

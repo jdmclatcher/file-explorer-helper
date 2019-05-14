@@ -165,6 +165,50 @@ namespace FileExplorerHelper
             SetBackupFiles(GetListOfFiles()); // set the backup files value to current files in folder
         }
 
+        public void RestoreCleanup()
+        {
+            // loop through each sub folder (if called one of the specified folders and extract and add to list)
+            // TOFIX - "Second path fragment must not be a drive or UNC name."
+            List<DirectoryInfo> folders = GetRootFolder().GetDirectories(GetRootFolder().FullName).ToList<DirectoryInfo>(); // convert to list
+            List<FileInfo> files = new List<FileInfo>(); // make new list to store final files
+
+            // run length of backup files
+            for (int i = 0; i < GetBackupFiles().Count; i++)
+            {
+                // check if file was not moved (is same) and add to list
+                if (GetBackupFiles()[i].FullName.Equals(files[i].FullName))
+                {
+                    files.Add(GetBackupFiles()[i]); // add to list
+                }
+
+                // loop through each folder
+                foreach(DirectoryInfo folder in folders)
+                {
+                    if (folder.Name.Equals("Documents"))
+                    {
+                        // then loop throuhh each file in the folder
+                        foreach(FileInfo file in folder.GetFiles())
+                        {
+                            files.Add(file); // add to root file
+                        }
+                    }
+                }
+            }
+
+            // if the counts are the same, execute the move
+            if(GetBackupFiles().Count() == files.Count)
+            {
+                for(int i = 0; i < GetBackupFiles().Count; i++)
+                {
+                    files[i].MoveTo(GetBackupFiles()[i].FullName); // move back to original position
+                }
+            }
+            else
+            {
+                // show error
+                AddMessage("ERROR: Cannot undo. File(s) modified externally.", 3);
+            }
+        }
 
     }
 }

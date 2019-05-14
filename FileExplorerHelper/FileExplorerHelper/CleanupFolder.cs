@@ -25,6 +25,7 @@ namespace FileExplorerHelper
 
         public void Cleanup()
         {
+            util.BackupFiles();
             // list out all files in the root folder
             List<FileInfo> files = util.GetListOfFiles();
 

@@ -105,6 +105,7 @@ namespace FileExplorerHelper
                 UpdateTexts();
                 Console.WriteLine("MESSAGE: Cleanup complete. All valid files were sorted.");
                 AddMessageWindow("MESSAGE: Cleanup complete. All valid files were sorted.", 1);
+                button_undo.IsEnabled = true;
             }
             
         }
@@ -206,9 +207,11 @@ namespace FileExplorerHelper
         // function to call to undo previous action
         public void Click_Undo(object sender, RoutedEventArgs e)
         {
+            utilClass.RestoreCleanup();
             button_undo.IsEnabled = false;
-            List<FileInfo> modifiedFiles = utilClass.GetListOfFiles(); // modified files
-            if(modifiedFiles.Count != utilClass.GetBackupFiles().Count)
+            List<FileInfo> modifiedFiles = utilClass.GetListOfFiles(); // store modified files
+
+            if (modifiedFiles.Count != utilClass.GetBackupFiles().Count)
             {
                 AddMessageWindow("ERROR: Cannot Undo. File(s) altered externally.", 3);
             }
@@ -224,7 +227,6 @@ namespace FileExplorerHelper
                         numChanged++;
                     }
                     // replace each files - move each file to original location
-                    // TOFIX - ImageRename - "Cannot create a file when that file already exists."
                     Console.WriteLine(modifiedFiles[i].FullName);
                     Console.WriteLine(utilClass.GetBackupFiles()[i].FullName);
 
@@ -291,13 +293,22 @@ namespace FileExplorerHelper
             {
                 // extract args
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                // set root folder of util class
-                utilClass.SetRootFolder(new DirectoryInfo(files[0]));
-                // perform init functions
-                UpdateTexts(); // update text boxes of data
-                EnableContent(); // enable the default disbaled buttons and content
-                InitRenameChoices(); // set up the renaming choices for image 
-                ClearOutput(); // reset console
+                FileAttributes file = File.GetAttributes(files[0]); // extract file details
+                if (file.HasFlag(FileAttributes.Directory))
+                {
+                    // set root folder of util class
+                    utilClass.SetRootFolder(new DirectoryInfo(files[0]));
+                    // perform init functions
+                    UpdateTexts(); // update text boxes of data
+                    EnableContent(); // enable the default disbaled buttons and content
+                    InitRenameChoices(); // set up the renaming choices for image 
+                    ClearOutput(); // reset console
+                }
+                else
+                {
+                    AddMessageWindow("ERROR: File dragged in is not a folder. Please drag in a folder.", 3);
+                }
+                
             }
         }
     }

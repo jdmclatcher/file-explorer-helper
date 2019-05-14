@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Jonathan McLatcher
+ * File Explorer Helper
+ * 2019
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

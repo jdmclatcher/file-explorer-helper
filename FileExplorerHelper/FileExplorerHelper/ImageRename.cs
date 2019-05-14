@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Jonathan McLatcher
+ * File Explorer Helper
+ * 2019
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +18,8 @@ namespace FileExplorerHelper
     {
         private Util util;
         private int duplicateCount; // number of duplicate files (append a ({num}) to )
-        private int numChanged; // number of files renamed
+        private int numChanged;
+
         public ImageRename(Util utilClass)
         {
             util = utilClass;
@@ -38,6 +45,7 @@ namespace FileExplorerHelper
 
         public void RenameImages(int choice)
         {
+            util.BackupFiles();
             SetDuplicateCount(0);
             // get a list of the files
             List<FileInfo> files = util.GetListOfFiles();

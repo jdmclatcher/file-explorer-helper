@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Jonathan McLatcher
+ * File Explorer Helper
+ * 2019
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +19,9 @@ namespace FileExplorerHelper
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    
+    // TODO - make "Cleanup Folder" work with undo
+
     public partial class MainWindow : Window
     {
         Util utilClass; // ref to util class
@@ -116,6 +125,7 @@ namespace FileExplorerHelper
                 // then clear the text fields
                 input_find.Clear();
                 input_replace.Clear();
+                button_undo.IsEnabled = true; // re-enable the button
             }
             
         }
@@ -133,6 +143,7 @@ namespace FileExplorerHelper
                 findAndRemove.FindAndRemoveFiles(input_remove.Text);
                 // then clear the text field
                 input_remove.Clear();
+                button_undo.IsEnabled = true; // re-enable the button
             }
 
         }
@@ -158,6 +169,7 @@ namespace FileExplorerHelper
                 {
                     Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
                     AddMessageWindow("MESSAGE: Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
+                    button_undo.IsEnabled = true; // re-enable the button
                 }
             }
 
@@ -187,6 +199,40 @@ namespace FileExplorerHelper
                 // proceed normally if file doesnt exists
                 utilClass.PrintDetails();
                 AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
+            }
+
+        }
+
+        // function to call to undo previous action
+        public void Click_Undo(object sender, RoutedEventArgs e)
+        {
+            button_undo.IsEnabled = false;
+            List<FileInfo> modifiedFiles = utilClass.GetListOfFiles(); // modified files
+            if(modifiedFiles.Count != utilClass.GetBackupFiles().Count)
+            {
+                AddMessageWindow("ERROR: Cannot Undo. File(s) altered externally.", 3);
+            }
+            else
+            {
+                int numChanged = 0; // track num files actually reverted
+                // loop through current files and replace them with the backed-up files
+                for(int i = 0; i < modifiedFiles.Count; i++)
+                {
+                    // check if same file, if not, add to count changed
+                    if(!modifiedFiles[i].FullName.Equals(utilClass.GetBackupFiles()[i].FullName))
+                    {
+                        numChanged++;
+                    }
+                    // replace each files - move each file to original location
+                    // TOFIX - ImageRename - "Cannot create a file when that file already exists."
+                    Console.WriteLine(modifiedFiles[i].FullName);
+                    Console.WriteLine(utilClass.GetBackupFiles()[i].FullName);
+
+                    modifiedFiles[i].MoveTo(utilClass.GetBackupFiles()[i].FullName); // move back to original location
+                    
+                }
+                // print out status message
+                AddMessageWindow("MESSAGE: Action successfully undone. " + numChanged + " file(s) renamed to original name.", 1);
             }
 
         }

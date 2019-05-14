@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Jonathan McLatcher
+ * File Explorer Helper
+ * 2019
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +35,7 @@ namespace FileExplorerHelper
         public void FindAndRemoveFiles(string toRemove)
         {
             List<FileInfo> files = util.GetListOfFiles(); // get all files
+            util.BackupFiles(); // set the values of the current state of files in folder
             // loop through and apply changes/replacements
             for (int i = 0; i < files.Count; i++)
             {

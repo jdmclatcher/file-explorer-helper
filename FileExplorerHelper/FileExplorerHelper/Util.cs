@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Jonathan McLatcher
+ * File Explorer Helper
+ * 2019
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +31,7 @@ namespace FileExplorerHelper
         private int fileCount;
         private bool canUseFunctions = true; // can use the functions of the program
         public string detailsFilesName = "Files_Details";
+        private List<FileInfo> backupFiles; // list of current files and info in folder
         #region Constructor and Getters/Setters
         public DirectoryInfo GetRootFolder()
         {
@@ -57,6 +64,18 @@ namespace FileExplorerHelper
         public bool GetCanUseFunctions()
         {
             return this.canUseFunctions;
+        }
+
+        // return a list of the previously backed-up files
+        public List<FileInfo> GetBackupFiles()
+        {
+            return this.backupFiles;
+        }
+
+        // actually does the setting
+        private void SetBackupFiles(List<FileInfo> files)
+        {
+            this.backupFiles = files;
         }
         #endregion
 
@@ -137,5 +156,15 @@ namespace FileExplorerHelper
             MainWindow mainWindow = (MainWindow)System.Windows.Application.Current.MainWindow;
             mainWindow.AddMessageWindow(message, severity);
         }
+
+        // called at every major function, automatically sets
+        // array to values currently in folder
+        public void BackupFiles()
+        {
+            // save current state of files
+            SetBackupFiles(GetListOfFiles()); // set the backup files value to current files in folder
+        }
+
+
     }
 }

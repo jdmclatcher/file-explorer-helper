@@ -19,8 +19,6 @@ namespace FileExplorerHelper
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    
-    // TODO - make "Cleanup Folder" work with undo
 
     public partial class MainWindow : Window
     {
@@ -207,35 +205,13 @@ namespace FileExplorerHelper
         // function to call to undo previous action
         public void Click_Undo(object sender, RoutedEventArgs e)
         {
-            utilClass.RestoreCleanup();
+            // TODO - add a check to determine if need to use restore cleanup or normal restore
+            // utilClass.RestoreCleanup();
             button_undo.IsEnabled = false;
-            List<FileInfo> modifiedFiles = utilClass.GetListOfFiles(); // store modified files
 
-            if (modifiedFiles.Count != utilClass.GetBackupFiles().Count)
-            {
-                AddMessageWindow("ERROR: Cannot Undo. File(s) altered externally.", 3);
-            }
-            else
-            {
-                int numChanged = 0; // track num files actually reverted
-                // loop through current files and replace them with the backed-up files
-                for(int i = 0; i < modifiedFiles.Count; i++)
-                {
-                    // check if same file, if not, add to count changed
-                    if(!modifiedFiles[i].FullName.Equals(utilClass.GetBackupFiles()[i].FullName))
-                    {
-                        numChanged++;
-                    }
-                    // replace each files - move each file to original location
-                    Console.WriteLine(modifiedFiles[i].FullName);
-                    Console.WriteLine(utilClass.GetBackupFiles()[i].FullName);
 
-                    modifiedFiles[i].MoveTo(utilClass.GetBackupFiles()[i].FullName); // move back to original location
-                    
-                }
-                // print out status message
-                AddMessageWindow("MESSAGE: Action successfully undone. " + numChanged + " file(s) renamed to original name.", 1);
-            }
+            // call util function
+            utilClass.RestoreRename();
 
         }
 

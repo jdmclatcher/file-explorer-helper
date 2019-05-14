@@ -165,43 +165,106 @@ namespace FileExplorerHelper
             SetBackupFiles(GetListOfFiles()); // set the backup files value to current files in folder
         }
 
+        // TOFIX - files getting corrupted
+        // general restore for all basic functions (that are not cleanup folder)
+        public void RestoreRename()
+        {
+            List<FileInfo> modifiedFiles = GetListOfFiles(); // store modified files
+
+            if (modifiedFiles.Count != GetBackupFiles().Count)
+            {
+                AddMessage("ERROR: Cannot undo. File(s) modified externally.", 3);
+            }
+            else
+            {
+                int numChanged = 0; // track num files actually reverted
+                // loop through current files and replace them with the backed-up files
+                for (int i = 0; i < modifiedFiles.Count; i++)
+                {
+                    
+
+
+                    // check if same file, if not, add to count changed
+                    // and perform the change
+                    if (!modifiedFiles[i].FullName.Equals(GetBackupFiles()[i].FullName))
+                    {
+                        numChanged++;
+                        modifiedFiles[i].MoveTo(GetBackupFiles()[i].FullName); // move back to original location
+                    }
+                    // replace each files - move each file to original location
+                    Console.WriteLine(modifiedFiles[i].FullName);
+                    Console.WriteLine(GetBackupFiles()[i].FullName);
+
+                }
+                // print out status message
+                AddMessage("MESSAGE: Action successfully undone. " + numChanged + " file(s) renamed to original name.", 1);
+            }
+        }
+
+        // TODO - work on this
         public void RestoreCleanup()
         {
             // loop through each sub folder (if called one of the specified folders and extract and add to list)
-            // TOFIX - "Second path fragment must not be a drive or UNC name."
-            List<DirectoryInfo> folders = GetRootFolder().GetDirectories(GetRootFolder().FullName).ToList<DirectoryInfo>(); // convert to list
+            
+
+            List<DirectoryInfo> folders = GetRootFolder().GetDirectories().ToList<DirectoryInfo>(); // convert to list
             List<FileInfo> files = new List<FileInfo>(); // make new list to store final files
 
             // run length of backup files
             for (int i = 0; i < GetBackupFiles().Count; i++)
             {
-                // check if file was not moved (is same) and add to list
-                if (GetBackupFiles()[i].FullName.Equals(files[i].FullName))
-                {
-                    files.Add(GetBackupFiles()[i]); // add to list
-                }
+                // Console.WriteLine(GetBackupFiles()[i].FullName);
 
-                // loop through each folder
-                foreach(DirectoryInfo folder in folders)
+                // check if there is a normal file still in the folder
+                // then check if file was not moved (is same) and add to list
+                if(GetListOfFiles().Count != 0)
                 {
-                    if (folder.Name.Equals("Documents"))
+                    if (GetBackupFiles()[i].FullName.Equals(GetListOfFiles()[i].FullName))
                     {
-                        // then loop throuhh each file in the folder
-                        foreach(FileInfo file in folder.GetFiles())
-                        {
-                            files.Add(file); // add to root file
-                        }
+                        files.Add(GetBackupFiles()[i]); // add to list
+                    }
+                } 
+            }
+
+            // loop through each folder
+            foreach (DirectoryInfo folder in folders)
+            {
+                if (folder.Name.Equals("Documents"))
+                {
+                    // then loop throuhh each file in the folder
+                    foreach (FileInfo file in folder.GetFiles())
+                    {
+                        Console.WriteLine("Doc added.");
+                        files.Add(file); // add to root file
+                    }
+                }
+                else if (folder.Name.Equals("Images"))
+                {
+                    // then loop throuhh each file in the folder
+                    foreach (FileInfo file in folder.GetFiles())
+                    {
+                        Console.WriteLine("Image added.");
+                        files.Add(file); // add to root file
+                    }
+                }
+                else if (folder.Name.Equals("Audio"))
+                {
+                    // then loop throuhh each file in the folder
+                    foreach (FileInfo file in folder.GetFiles())
+                    {
+                        files.Add(file); // add to root file
                     }
                 }
             }
 
             // if the counts are the same, execute the move
-            if(GetBackupFiles().Count() == files.Count)
+            if(GetBackupFiles().Count == files.Count)
             {
                 for(int i = 0; i < GetBackupFiles().Count; i++)
                 {
                     files[i].MoveTo(GetBackupFiles()[i].FullName); // move back to original position
                 }
+                AddMessage("MESSAGE: Action successfully undone. " + GetBackupFiles().Count + " files were reverted.", 1);
             }
             else
             {

@@ -282,5 +282,24 @@ namespace FileExplorerHelper
         {
             scrollViewerBG.Children.Clear(); // remove all the textblock children in the BG
         }
+
+        // drag and drop folder functionality
+        public void Drop_Folder(object sender, DragEventArgs e)
+        {
+            // if a file was dropped in
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // extract args
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                // set root folder of util class
+                utilClass.SetRootFolder(new DirectoryInfo(files[0]));
+                // perform init functions
+                UpdateTexts(); // update text boxes of data
+                EnableContent(); // enable the default disbaled buttons and content
+                InitRenameChoices(); // set up the renaming choices for image 
+                ClearOutput(); // reset console
+            }
+        }
     }
+
 } 

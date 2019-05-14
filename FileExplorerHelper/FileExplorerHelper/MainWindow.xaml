@@ -19,7 +19,7 @@
             <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">File Explorer Helper</TextBlock>
         </materialDesign:Card>
         <TextBlock HorizontalAlignment="Left" Margin="281,31,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" Width="102" FontWeight="Bold"/>
-        <Button Click="Click_BrowseForFolder" Content="Browse for Folder" Margin="258,121,258,0" VerticalAlignment="Top"/>
+        <Button FontSize="12" Click="Click_BrowseForFolder" Content="Browse for Folder" Margin="230,121,336,0" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="281,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="File(s) In Folder:"/>
         <TextBlock HorizontalAlignment="Left" Margin="281,78,0,0" TextWrapping="Wrap" Text="Sub-Folder(s):" VerticalAlignment="Top" Width="86"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,31,0,0" TextWrapping="Wrap" Name="text_folderName" VerticalAlignment="Top" FontWeight="Bold" Width="282"/>
@@ -42,5 +42,11 @@
         <materialDesign:Card Padding="32" Margin="16,405,16,19" VerticalAlignment="Stretch" />
         <ScrollViewer CanContentScroll="True" Name="scrollViewer_output" Margin="20,405,16,20" BorderThickness="2"/>
         <Button Name="button_undo" IsEnabled="false" Content="Undo" Click="Click_Undo" HorizontalAlignment="Left" Margin="320,254,0,0" VerticalAlignment="Top" Width="75"/>
+        <StackPanel Drop="Drop_Folder" AllowDrop="True" HorizontalAlignment="Left" Height="32" Margin="363,121,0,0" VerticalAlignment="Top" Width="100"/>
+        
+        
+        <!--<Button BorderThickness="0" HorizontalAlignment="Left" Margin="20,386,0,0" VerticalAlignment="Top" Width="17" Height="19">
+            <Image Source="/Icons/clear.png" Stretch="Uniform"/>
+        </Button>-->
     </Grid>
 </Window>

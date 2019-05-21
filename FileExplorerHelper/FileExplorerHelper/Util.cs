@@ -101,7 +101,7 @@ namespace FileExplorerHelper
         {
             // returns all the files in the root folder
             List<FileInfo> files = new DirectoryInfo(GetRootFolder().FullName).GetFiles().ToList<FileInfo>();
-            
+
             // loop through each file and check if it has a .ini file and ignore it
             for (int i = 0; i < files.Count; i++)
             {
@@ -111,7 +111,8 @@ namespace FileExplorerHelper
                     files.RemoveAt(i);
                 }
             }
-            return files; 
+            return files;
+
         }
 
         #endregion
@@ -141,14 +142,25 @@ namespace FileExplorerHelper
 
         public void PrintDetails()
         {
-            // print out all paths of all files in folder to one .txt file
-            // new blank string array of the same size as the number of files
-            string[] paths = new string[GetListOfFiles().Count]; 
-            for(int i = 0; i < GetListOfFiles().Count; i++)
+            // if folder still exists, do code
+            if(new DirectoryInfo(GetRootFolder().FullName).Exists)
             {
-                paths[i] = GetListOfFiles()[i].FullName;
+                // print out all paths of all files in folder to one .txt file
+                // new blank string array of the same size as the number of files
+                string[] paths = new string[GetListOfFiles().Count];
+                for (int i = 0; i < GetListOfFiles().Count; i++)
+                {
+                    paths[i] = GetListOfFiles()[i].FullName;
+                }
+                File.WriteAllLines(GetRootFolder().FullName + "/" + detailsFilesName + ".txt", paths);
+                AddMessage("MESSAGE: Details printed to \"" + GetRootFolder() + "\\" + detailsFilesName + ".txt\"", 1);
             }
-            File.WriteAllLines(GetRootFolder().FullName + "/" + detailsFilesName + ".txt", paths);
+            // if not, print out error
+            else
+            {
+                AddMessage("ERROR: Folder moved/edited/deleted. Please browse of a new folder and try again.", 3);
+            }
+            
         }
 
         public void AddMessage(string message, int severity)
@@ -165,113 +177,112 @@ namespace FileExplorerHelper
             SetBackupFiles(GetListOfFiles()); // set the backup files value to current files in folder
         }
 
-        // TOFIX - files getting corrupted
+        // TOFIX - undo button, files getting corrupted
         // general restore for all basic functions (that are not cleanup folder)
-        public void RestoreRename()
-        {
-            List<FileInfo> modifiedFiles = GetListOfFiles(); // store modified files
+        //public void RestoreRename()
+        //{
+        //    List<FileInfo> modifiedFiles = GetListOfFiles(); // store modified files
 
-            if (modifiedFiles.Count != GetBackupFiles().Count)
-            {
-                AddMessage("ERROR: Cannot undo. File(s) modified externally.", 3);
-            }
-            else
-            {
-                int numChanged = 0; // track num files actually reverted
-                // loop through current files and replace them with the backed-up files
-                for (int i = 0; i < modifiedFiles.Count; i++)
-                {
+        //    if (modifiedFiles.Count != GetBackupFiles().Count)
+        //    {
+        //        AddMessage("ERROR: Cannot undo. File(s) modified externally.", 3);
+        //    }
+        //    else
+        //    {
+        //        int numChanged = 0; // track num files actually reverted
+        //        // loop through current files and replace them with the backed-up files
+        //        for (int i = 0; i < modifiedFiles.Count; i++)
+        //        {
                     
 
 
-                    // check if same file, if not, add to count changed
-                    // and perform the change
-                    if (!modifiedFiles[i].FullName.Equals(GetBackupFiles()[i].FullName))
-                    {
-                        numChanged++;
-                        modifiedFiles[i].MoveTo(GetBackupFiles()[i].FullName); // move back to original location
-                    }
-                    // replace each files - move each file to original location
-                    Console.WriteLine(modifiedFiles[i].FullName);
-                    Console.WriteLine(GetBackupFiles()[i].FullName);
+        //            // check if same file, if not, add to count changed
+        //            // and perform the change
+        //            if (!modifiedFiles[i].FullName.Equals(GetBackupFiles()[i].FullName))
+        //            {
+        //                numChanged++;
+        //                modifiedFiles[i].MoveTo(GetBackupFiles()[i].FullName); // move back to original location
+        //            }
+        //            // replace each files - move each file to original location
+        //            Console.WriteLine(modifiedFiles[i].FullName);
+        //            Console.WriteLine(GetBackupFiles()[i].FullName);
 
-                }
-                // print out status message
-                AddMessage("MESSAGE: Action successfully undone. " + numChanged + " file(s) renamed to original name.", 1);
-            }
-        }
+        //        }
+        //        // print out status message
+        //        AddMessage("MESSAGE: Action successfully undone. " + numChanged + " file(s) renamed to original name.", 1);
+        //    }
+        //}
 
-        // TODO - work on this
-        public void RestoreCleanup()
-        {
-            // loop through each sub folder (if called one of the specified folders and extract and add to list)
+        //public void RestoreCleanup()
+        //{
+        //    // loop through each sub folder (if called one of the specified folders and extract and add to list)
             
 
-            List<DirectoryInfo> folders = GetRootFolder().GetDirectories().ToList<DirectoryInfo>(); // convert to list
-            List<FileInfo> files = new List<FileInfo>(); // make new list to store final files
+        //    List<DirectoryInfo> folders = GetRootFolder().GetDirectories().ToList<DirectoryInfo>(); // convert to list
+        //    List<FileInfo> files = new List<FileInfo>(); // make new list to store final files
 
-            // run length of backup files
-            for (int i = 0; i < GetBackupFiles().Count; i++)
-            {
-                // Console.WriteLine(GetBackupFiles()[i].FullName);
+        //    // run length of backup files
+        //    for (int i = 0; i < GetBackupFiles().Count; i++)
+        //    {
+        //        // Console.WriteLine(GetBackupFiles()[i].FullName);
 
-                // check if there is a normal file still in the folder
-                // then check if file was not moved (is same) and add to list
-                if(GetListOfFiles().Count != 0)
-                {
-                    if (GetBackupFiles()[i].FullName.Equals(GetListOfFiles()[i].FullName))
-                    {
-                        files.Add(GetBackupFiles()[i]); // add to list
-                    }
-                } 
-            }
+        //        // check if there is a normal file still in the folder
+        //        // then check if file was not moved (is same) and add to list
+        //        if(GetListOfFiles().Count != 0)
+        //        {
+        //            if (GetBackupFiles()[i].FullName.Equals(GetListOfFiles()[i].FullName))
+        //            {
+        //                files.Add(GetBackupFiles()[i]); // add to list
+        //            }
+        //        } 
+        //    }
 
-            // loop through each folder
-            foreach (DirectoryInfo folder in folders)
-            {
-                if (folder.Name.Equals("Documents"))
-                {
-                    // then loop throuhh each file in the folder
-                    foreach (FileInfo file in folder.GetFiles())
-                    {
-                        Console.WriteLine("Doc added.");
-                        files.Add(file); // add to root file
-                    }
-                }
-                else if (folder.Name.Equals("Images"))
-                {
-                    // then loop throuhh each file in the folder
-                    foreach (FileInfo file in folder.GetFiles())
-                    {
-                        Console.WriteLine("Image added.");
-                        files.Add(file); // add to root file
-                    }
-                }
-                else if (folder.Name.Equals("Audio"))
-                {
-                    // then loop throuhh each file in the folder
-                    foreach (FileInfo file in folder.GetFiles())
-                    {
-                        files.Add(file); // add to root file
-                    }
-                }
-            }
+        //    // loop through each folder
+        //    foreach (DirectoryInfo folder in folders)
+        //    {
+        //        if (folder.Name.Equals("Documents"))
+        //        {
+        //            // then loop throuhh each file in the folder
+        //            foreach (FileInfo file in folder.GetFiles())
+        //            {
+        //                Console.WriteLine("Doc added.");
+        //                files.Add(file); // add to root file
+        //            }
+        //        }
+        //        else if (folder.Name.Equals("Images"))
+        //        {
+        //            // then loop throuhh each file in the folder
+        //            foreach (FileInfo file in folder.GetFiles())
+        //            {
+        //                Console.WriteLine("Image added.");
+        //                files.Add(file); // add to root file
+        //            }
+        //        }
+        //        else if (folder.Name.Equals("Audio"))
+        //        {
+        //            // then loop throuhh each file in the folder
+        //            foreach (FileInfo file in folder.GetFiles())
+        //            {
+        //                files.Add(file); // add to root file
+        //            }
+        //        }
+        //    }
 
-            // if the counts are the same, execute the move
-            if(GetBackupFiles().Count == files.Count)
-            {
-                for(int i = 0; i < GetBackupFiles().Count; i++)
-                {
-                    files[i].MoveTo(GetBackupFiles()[i].FullName); // move back to original position
-                }
-                AddMessage("MESSAGE: Action successfully undone. " + GetBackupFiles().Count + " files were reverted.", 1);
-            }
-            else
-            {
-                // show error
-                AddMessage("ERROR: Cannot undo. File(s) modified externally.", 3);
-            }
-        }
+        //    // if the counts are the same, execute the move
+        //    if(GetBackupFiles().Count == files.Count)
+        //    {
+        //        for(int i = 0; i < GetBackupFiles().Count; i++)
+        //        {
+        //            files[i].MoveTo(GetBackupFiles()[i].FullName); // move back to original position
+        //        }
+        //        AddMessage("MESSAGE: Action successfully undone. " + GetBackupFiles().Count + " files were reverted.", 1);
+        //    }
+        //    else
+        //    {
+        //        // show error
+        //        AddMessage("ERROR: Cannot undo. File(s) modified externally.", 3);
+        //    }
+        //}
 
     }
 }

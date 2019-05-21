@@ -103,7 +103,7 @@ namespace FileExplorerHelper
                 UpdateTexts();
                 Console.WriteLine("MESSAGE: Cleanup complete. All valid files were sorted.");
                 AddMessageWindow("MESSAGE: Cleanup complete. All valid files were sorted.", 1);
-                button_undo.IsEnabled = true;
+                // button_undo.IsEnabled = true;
             }
             
         }
@@ -124,7 +124,7 @@ namespace FileExplorerHelper
                 // then clear the text fields
                 input_find.Clear();
                 input_replace.Clear();
-                button_undo.IsEnabled = true; // re-enable the button
+                // button_undo.IsEnabled = true; // re-enable the button
             }
             
         }
@@ -142,7 +142,7 @@ namespace FileExplorerHelper
                 findAndRemove.FindAndRemoveFiles(input_remove.Text);
                 // then clear the text field
                 input_remove.Clear();
-                button_undo.IsEnabled = true; // re-enable the button
+                // button_undo.IsEnabled = true; // re-enable the button
             }
 
         }
@@ -168,7 +168,7 @@ namespace FileExplorerHelper
                 {
                     Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
                     AddMessageWindow("MESSAGE: Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
-                    button_undo.IsEnabled = true; // re-enable the button
+                    // button_undo.IsEnabled = true; // re-enable the button
                 }
             }
 
@@ -190,30 +190,31 @@ namespace FileExplorerHelper
                     // proceed
                     // function that will print out all the files to a .txt file
                     utilClass.PrintDetails();
-                    AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
+                    // AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
                 }
             }
             else
             {
                 // proceed normally if file doesnt exists
                 utilClass.PrintDetails();
-                AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
+                // AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
             }
 
         }
 
+        // TODO - fix undo button
         // function to call to undo previous action
-        public void Click_Undo(object sender, RoutedEventArgs e)
-        {
-            // TODO - add a check to determine if need to use restore cleanup or normal restore
-            // utilClass.RestoreCleanup();
-            button_undo.IsEnabled = false;
+        //public void Click_Undo(object sender, RoutedEventArgs e)
+        //{
+        //    // TODO - add a check to determine if need to use restore cleanup or normal restore
+        //    // utilClass.RestoreCleanup();
+        //    button_undo.IsEnabled = false;
 
 
-            // call util function
-            utilClass.RestoreRename();
+        //    // call util function
+        //    utilClass.RestoreRename();
 
-        }
+        //}
 
         // called to create canvas under scroll viewer
         public void Init_OutputBox()

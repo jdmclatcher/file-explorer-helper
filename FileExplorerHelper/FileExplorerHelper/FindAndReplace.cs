@@ -53,7 +53,7 @@ namespace FileExplorerHelper
                 else if (File.Exists(newName))
                 {
                     // send message and dont replace
-                    util.AddMessage("WARNING: File \"" + files[i].Name.Substring(0, files[i].Name.LastIndexOf(".")).Replace(toRemove, toReplace) + files[i].Extension + "\" already exists. No changes made to \"" + files[i].Name + "\"", 2);
+                    util.AddMessage("File \"" + files[i].Name.Substring(0, files[i].Name.LastIndexOf(".")).Replace(toRemove, toReplace) + files[i].Extension + "\" already exists. No changes made to \"" + files[i].Name + "\"", 2);
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace FileExplorerHelper
                     files[i].MoveTo(newName);
                 }
             }
-            util.AddMessage("MESSAGE: All instances of \"" + toRemove + "\" replaced with \"" + toReplace + "\" in all files. " + GetNumChanged() + " file(s) modified.", 1);
+            util.AddMessage("All instances of \"" + toRemove + "\" replaced with \"" + toReplace + "\" in all files. " + GetNumChanged() + " file(s) modified.", 1);
         }
     }
 }

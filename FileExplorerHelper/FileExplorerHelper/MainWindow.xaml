@@ -41,7 +41,7 @@
         <Button Name="button_printDetails" IsEnabled="false" Click="Click_PrintDetails" Content="Print Details" HorizontalAlignment="Left" Margin="513,68,0,0" Width="113" Height="26" VerticalAlignment="Top"/>
         <materialDesign:Card Padding="32" Margin="16,405,16,19" VerticalAlignment="Stretch" />
         <ScrollViewer CanContentScroll="True" Name="scrollViewer_output" Margin="20,405,16,20" BorderThickness="2"/>
-        <!--<Button Name="button_undo" IsEnabled="false" Content="Undo" Click="Click_Undo" HorizontalAlignment="Left" Margin="16,113,0,0" VerticalAlignment="Top" Width="75"/>-->
+        <Button Name="button_undo" IsEnabled="false" Content="Undo" Click="Click_Undo" HorizontalAlignment="Left" Margin="16,113,0,0" VerticalAlignment="Top" Width="75"/>
         <Border BorderBrush="DodgerBlue" BorderThickness="2" CornerRadius="3" Margin="360,121,213,0" Height="32" VerticalAlignment="Top"/>
         <StackPanel Background="Transparent" Drop="Drop_Folder" AllowDrop="true" HorizontalAlignment="Left" Height="32" Margin="363,121,0,0" VerticalAlignment="Top" Width="100">
             <Grid />

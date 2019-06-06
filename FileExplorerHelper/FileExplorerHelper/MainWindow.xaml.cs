@@ -22,20 +22,20 @@ namespace FileExplorerHelper
 
     public partial class MainWindow : Window
     {
-        Util utilClass; // ref to util class
+        Util util; // ref to util class
         private StackPanel scrollViewerBG; // ref to canvas for scroll viewer
         public MainWindow()
         {
             InitializeComponent(); // create xaml
             Init_OutputBox();
-            utilClass = new Util(); // create instance of utility class
+            util = new Util(); // create instance of utility class
         }
 
         private void Click_BrowseForFolder(object sender, RoutedEventArgs e)
         {
-            utilClass.BrowseAndSelectFolder(); // open dialog to browse
+            util.BrowseAndSelectFolder(); // open dialog to browse
 
-            if (utilClass.GetCanUseFunctions())
+            if (util.GetCanUseFunctions())
             {
                 UpdateTexts(); // update text boxes of data
                 EnableContent(); // enable the default disbaled buttons and content
@@ -45,7 +45,7 @@ namespace FileExplorerHelper
             else
             {
                 // provide message
-                AddMessageWindow("WARNING: No folder was selected. Please select a folder.", 2);
+                AddMessageWindow("No folder was selected. Please select a folder.", 2);
             }
         }
 
@@ -64,16 +64,15 @@ namespace FileExplorerHelper
 
         private void UpdateTexts()
         {
-            utilClass.CountFilesAndFolders();
-            text_folderName.Text = utilClass.GetRootFolder().Name; // set text to name of folder
+            util.CountFilesAndFolders();
+            text_folderName.Text = util.GetRootFolder().Name; // set text to name of folder
             // set files and subfolders number
-            text_filesNum.Text = utilClass.GetNumFiles().ToString();
-            text_subFoldersNum.Text = utilClass.GetNumSubFolders().ToString();
+            text_filesNum.Text = util.GetNumFiles().ToString();
+            text_subFoldersNum.Text = util.GetNumSubFolders().ToString();
         }
 
         private void InitRenameChoices()
         {
-            // TODO - finalize these options
             input_imageRenameChoice.Items.Clear(); // clear all the choices before adding again
             // add all the choices to the combo box
             input_imageRenameChoice.Items.Add("MM.DD.YYYY");                     // 0
@@ -89,21 +88,22 @@ namespace FileExplorerHelper
         // called from cleanup folder button
         private void Click_CleanupFolder(object sender, RoutedEventArgs e)
         {
-            utilClass.GetRootFolder().Refresh(); // refresh info of root folder
-            if (!utilClass.GetRootFolder().Exists)
+            util.GetRootFolder().Refresh(); // refresh info of root folder
+            if (!util.GetRootFolder().Exists)
             {
-                Console.WriteLine("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.");
-                AddMessageWindow("ERROR: Folder was moved, deleted, or edited. Please browse for a new folder.", 3);
+                Console.WriteLine("Folder was moved, deleted, or edited. Please browse for a new folder.");
+                AddMessageWindow("Folder was moved, deleted, or edited. Please browse for a new folder.", 3);
             }
             else
             {
                 // create instance of the Cleanup Folder class and call function on it
-                CleanupFolder folderCleanup = new CleanupFolder(utilClass); // pass in the util class
+                CleanupFolder folderCleanup = new CleanupFolder(util); // pass in the util class
                 folderCleanup.Cleanup();
                 UpdateTexts();
-                Console.WriteLine("MESSAGE: Cleanup complete. All valid files were sorted.");
-                AddMessageWindow("MESSAGE: Cleanup complete. All valid files were sorted.", 1);
-                // button_undo.IsEnabled = true;
+                Console.WriteLine("Cleanup complete. All valid files were sorted.");
+                AddMessageWindow("Cleanup complete. All valid files were sorted.", 1);
+                util.SetCleanupLast(true);
+                button_undo.IsEnabled = true;
             }
             
         }
@@ -111,12 +111,12 @@ namespace FileExplorerHelper
         // called from find and replace button
         private void Click_FindAndReplace(object sender, RoutedEventArgs e)
         {
-            FindAndReplace findAndReplace = new FindAndReplace(utilClass);
+            FindAndReplace findAndReplace = new FindAndReplace(util);
             // check if there is input, and distribute it accordingly
             if (input_find.Text.Equals(null) || input_replace.Text.Equals(null) || input_find.Text.Equals("") || input_replace.Text.Equals(""))
             {
                 Console.WriteLine("Please provide input");
-                AddMessageWindow("ERROR: No input provided. Please enter text to find and replace.", 3);
+                AddMessageWindow("No input provided. Please enter text to find and replace.", 3);
             }
             else
             {
@@ -124,37 +124,39 @@ namespace FileExplorerHelper
                 // then clear the text fields
                 input_find.Clear();
                 input_replace.Clear();
-                // button_undo.IsEnabled = true; // re-enable the button
+                util.SetCleanupLast(false);
+                button_undo.IsEnabled = true; // re-enable the button
             }
             
         }
 
         private void Click_FindAndRemove(object sender, RoutedEventArgs e)
         {
-            FindAndRemove findAndRemove = new FindAndRemove(utilClass);
+            FindAndRemove findAndRemove = new FindAndRemove(util);
             if (input_remove.Text.Equals(null) || input_remove.Text.Equals(""))
             {
                 Console.WriteLine("Please provide input");
-                AddMessageWindow("ERROR: No input provided. Please enter text to find and remove.", 3);
+                AddMessageWindow("No input provided. Please enter text to find and remove.", 3);
             }
             else
             {
                 findAndRemove.FindAndRemoveFiles(input_remove.Text);
                 // then clear the text field
                 input_remove.Clear();
-                // button_undo.IsEnabled = true; // re-enable the button
+                util.SetCleanupLast(false);
+                button_undo.IsEnabled = true; // re-enable the button
             }
 
         }
 
         private void Click_RenameImages(object sender, RoutedEventArgs e)
         {
-            ImageRename imageRenamer = new ImageRename(utilClass);
+            ImageRename imageRenamer = new ImageRename(util);
             int choice = input_imageRenameChoice.SelectedIndex;
             if(choice == -1)
             {
                 Console.WriteLine("No option selected. Please select an option.");
-                AddMessageWindow("ERROR: No option selected. Please select an option.", 3);
+                AddMessageWindow("No option selected. Please select an option.", 3);
             }
             else
             {
@@ -162,13 +164,14 @@ namespace FileExplorerHelper
                 if (imageRenamer.GetNumChanged() == 0)
                 {
                     Console.WriteLine("No files were renamed.");
-                    AddMessageWindow("MESSAGE: Rename complete. No files were renamed.", 1);
+                    AddMessageWindow("Rename complete. No files were renamed.", 1);
                 }
                 else
                 {
                     Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
-                    AddMessageWindow("MESSAGE: Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
-                    // button_undo.IsEnabled = true; // re-enable the button
+                    AddMessageWindow("Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
+                    util.SetCleanupLast(false);
+                    button_undo.IsEnabled = true; // re-enable the button
                 }
             }
 
@@ -177,10 +180,10 @@ namespace FileExplorerHelper
         public void Click_PrintDetails(object sender, RoutedEventArgs e)
         {
             // check if that file already exits
-            if (new FileInfo(utilClass.GetRootFolder().FullName + "/" + utilClass.detailsFilesName + ".txt").Exists)
+            if (new FileInfo(util.GetRootFolder().FullName + "/" + util.detailsFilesName + ".txt").Exists)
             {
                 // and prompt an override
-                if (MessageBox.Show("File \"" + utilClass.detailsFilesName +  "\" already exists. Would you like to overwrite it.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                if (MessageBox.Show("File \"" + util.detailsFilesName +  "\" already exists. Would you like to overwrite it.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
                     // cancel
                     return;
@@ -189,32 +192,38 @@ namespace FileExplorerHelper
                 {
                     // proceed
                     // function that will print out all the files to a .txt file
-                    utilClass.PrintDetails();
+                    util.PrintDetails();
                     // AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
                 }
             }
             else
             {
                 // proceed normally if file doesnt exists
-                utilClass.PrintDetails();
+                util.PrintDetails();
                 // AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
             }
 
         }
 
-        // TODO - fix undo button
         // function to call to undo previous action
-        //public void Click_Undo(object sender, RoutedEventArgs e)
-        //{
-        //    // TODO - add a check to determine if need to use restore cleanup or normal restore
-        //    // utilClass.RestoreCleanup();
-        //    button_undo.IsEnabled = false;
+        public void Click_Undo(object sender, RoutedEventArgs e)
+        {
+            // disable the button again
+            button_undo.IsEnabled = false;
 
-
-        //    // call util function
-        //    utilClass.RestoreRename();
-
-        //}
+            // check to determine if last action was the cleanup folder function
+            if (util.GetCleanupLast())
+            {
+                Console.WriteLine("Performing a cleanup restore...");
+                util.RestoreCleanup();
+            }
+            else
+            {
+                // normal restore if not
+                Console.WriteLine("Performing a rename restore...");
+                util.RestoreRename();
+            }
+        }
 
         // called to create canvas under scroll viewer
         public void Init_OutputBox()
@@ -223,26 +232,28 @@ namespace FileExplorerHelper
             scrollViewer_output.Content = scrollViewerBG; // make it child fo scroll viewer
         }
 
-        public void AddMessageWindow(string message, int severity)
+        public void AddMessageWindow(string message, int code)
         {
             // change text color and background color based on message severity
             // 1 = green (MESSAGE), 2 = yellow (WARNING), 3 = red (ERROR)
             TextBlock textBlock = new TextBlock(); // make a new textblock 
             // scrollViewerGrid.Children.Add(textBlock); // make child of stack panel
             scrollViewerBG.Children.Add(textBlock);
-            switch (severity)
+
+            textBlock.Text = DateTime.Now.ToString("hh:mm:ss tt:"); // first part of message is the time
+            switch (code)
             {
                 case 1:
                     textBlock.Foreground = Brushes.Green;
-                    // textBlock.Background = Brushes.LightGreen;
+                    textBlock.Text += " [MESSAGE] "; // add the error code
                     break;
                 case 2:
                     textBlock.Foreground = Brushes.Orange;
-                    // textBlock.Background = Brushes.LightYellow;
+                    textBlock.Text += " [WARNING] ";
                     break;
                 case 3:
                     textBlock.Foreground = Brushes.Red;
-                    // textBlock.Background = Brushes.Red; // TODO - maybe wrong color?
+                    textBlock.Text += " [ERROR!] ";
                     break;
                 default:
                     textBlock.Foreground = Brushes.Black;
@@ -251,7 +262,7 @@ namespace FileExplorerHelper
 
             // change font
             textBlock.FontFamily = new FontFamily("Consolas");
-            textBlock.Text = DateTime.Now.ToString("hh:mm:ss tt") + ": " + message;  // set text to message (plus the time)
+            textBlock.Text += message;  // set text to message (plus the time)
             textBlock.TextWrapping = TextWrapping.Wrap; // wrap text in case it is too long
             scrollViewer_output.ScrollToEnd(); // auto scroll to latest addition
         }
@@ -274,7 +285,7 @@ namespace FileExplorerHelper
                 if (file.HasFlag(FileAttributes.Directory))
                 {
                     // set root folder of util class
-                    utilClass.SetRootFolder(new DirectoryInfo(files[0]));
+                    util.SetRootFolder(new DirectoryInfo(files[0]));
                     // perform init functions
                     UpdateTexts(); // update text boxes of data
                     EnableContent(); // enable the default disbaled buttons and content
@@ -283,7 +294,7 @@ namespace FileExplorerHelper
                 }
                 else
                 {
-                    AddMessageWindow("ERROR: File dragged in is not a folder. Please drag in a folder.", 3);
+                    AddMessageWindow("File dragged in is not a folder. Please drag in a folder.", 3);
                 }
                 
             }

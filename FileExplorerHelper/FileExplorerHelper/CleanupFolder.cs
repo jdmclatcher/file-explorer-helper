@@ -116,7 +116,7 @@ namespace FileExplorerHelper
 
                 // send message, 2 for a yellow warning
                 Console.WriteLine("WARNING: A file \"" + file.Name + "\" already exists in destination. \"" + file.Name + "\" not moved.", 2);
-                util.AddMessage("WARNING: A file \"" + file.Name + "\" already exists in destination. \"" + file.Name + "\" not moved.", 2);
+                util.AddMessage("A file \"" + file.Name + "\" already exists in destination. \"" + file.Name + "\" not moved.", 2);
             }
         }
 

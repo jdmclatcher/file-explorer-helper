@@ -155,7 +155,7 @@ namespace FileExplorerHelper
         {
             // if folder still exists, do code
             if(new DirectoryInfo(GetRootFolder().FullName).Exists)
-            {
+            { 
                 // print out all paths of all files in folder to one .txt file
                 // new blank string array of the same size as the number of files
                 string[] paths = new string[GetListOfFiles().Count];

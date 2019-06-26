@@ -36,6 +36,9 @@ This will find **ALL** the instances of the letter or phrase you specified in th
 
 This will remove **ALL** instances of the letter of phrase you specifed in the "Remove" text box from all the files in the folder. This only applies to the file name itself.
 
+#### Undo
+
+The Undo button will undo the most recent action and restore the modified file(s) to their original place/name.
 
 #### The Output Window
 

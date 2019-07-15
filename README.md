@@ -18,7 +18,7 @@ To begin the using the features of the File Explorer Helper, you must select a f
 
 The "Cleanup Folder" button will search through all the files in the folder and automatically sort them into newly created sub-folders based on the file type/file extension.
 
-NOTE: This action auto-creates folder(s) in the set folder. If a folder with the same name already exists, the sorted files will be added to that folder.
+**NOTE:** This action auto-creates folder(s) in the set folder. If a folder with the same name already exists, the sorted files will be added to that folder.
 
 #### Rename Images
 
@@ -26,7 +26,7 @@ A common file naming convention for auto-generated files named by cameras, phone
 
 If the files in the folder are using this scheme, you can choose from a variety of naming convention options to automatically rename all the files in that folder to.
 
-NOTE: AM is represented with a "0" in front of the hour, while PM has no "0".
+**NOTE:** AM is represented with a "0" in front of the hour, while PM has no "0".
 
 #### Find and Replace
 
@@ -38,7 +38,11 @@ This will remove **ALL** instances of the letter of phrase you specifed in the "
 
 #### Undo
 
-The Undo button will undo the most recent action and restore the modified file(s) to their original place/name.
+The Undo button will undo the most recent action and restore the modified file(s) to their original name.
+
+**NOTE** The Undo function currently does not work on the Cleanup Folder function. This will be fixed later.
+
+**NOTE:** It's important not to modify the files in the root folder or the sub-folders the cleanup was performed on.
 
 #### The Output Window
 
@@ -56,12 +60,12 @@ Thank you!
 
 Track the project development on [Trello](https://trello.com/b/gQziN8Dk/, "Trello Board")
 
-This project was made using Microsoft Visual Studio with C# and .NET
+This project was made using [Microsoft Visual Studio](https://visualstudio.microsoft.com/vs/community/, "Visual Studio Community") with C# and .NET
 
-NOTE: This program has permission to access and modify file names completely. This could result in file corruption. Use at your own risk.
+**NOTE:** This program has permission to access and modify file names completely. This could result in file corruption. Use at your own risk.
 
 ## Credits
 
-Created by Jonathan McLatcher
+Created by Jonathan McLatcher.
 
 [Material Design in XAML](http://materialdesigninxaml.net/, "Material Design in XAML") was used for UI styling.

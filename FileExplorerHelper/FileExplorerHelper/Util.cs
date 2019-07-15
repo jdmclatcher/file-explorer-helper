@@ -33,6 +33,11 @@ namespace FileExplorerHelper
         public string detailsFilesName = "Files_Details";
         private List<FileInfo> backupFiles; // list of current files and info in folder
         private bool cleanupLast; // true if most recent action was the cleanup folder function
+
+        // array of bools to check which file groups have -CLEANUP
+        // Audio, Documents, Executables, Images, Shortcuts, Videos (order)
+        private bool[] specialFolders = new bool[6];
+
         #region Constructor and Getters/Setters
         public DirectoryInfo GetRootFolder()
         {
@@ -88,6 +93,16 @@ namespace FileExplorerHelper
         {
             this.cleanupLast = cleanupLast;
         }
+
+        public bool[] GetSpecialFolders()
+        {
+            return specialFolders;
+        }
+
+        public void SetSpecialFolders(bool[] specialFolders)
+        {
+            this.specialFolders = specialFolders;
+        }
         #endregion
 
         #region Helper Methods
@@ -126,13 +141,20 @@ namespace FileExplorerHelper
 
         }
 
+        // called at every major function, automatically sets
+        // array to values currently in folder
+        public void BackupFiles()
+        {
+            // save current state of files
+            SetBackupFiles(GetListOfFiles()); // set the backup files value to current files in folder
+        }
+
         #endregion
 
         // function that opens dialog to prompt input of desired folder
         public void BrowseAndSelectFolder()
         {
             FolderBrowserDialog Dialog = new FolderBrowserDialog();
-
 
             Dialog.ShowDialog(); // pop up window
 
@@ -180,16 +202,7 @@ namespace FileExplorerHelper
             mainWindow.AddMessageWindow(message, code);
         }
 
-        // called at every major function, automatically sets
-        // array to values currently in folder
-        public void BackupFiles()
-        {
-            // save current state of files
-            SetBackupFiles(GetListOfFiles()); // set the backup files value to current files in folder
-        }
-
         #region Undo Actions
-        // broken -- files getting corrupted - arrays not lined up correctly
         // general restore for all basic functions (that are not cleanup folder)
         public void RestoreRename()
         {
@@ -197,24 +210,6 @@ namespace FileExplorerHelper
             // create and sort both arrays (by length because it is a constant) 
             List<FileInfo> mod = GetListOfFiles().OrderBy(f => f.Length).ToList(); // modified files - current files
             List<FileInfo> backup = GetBackupFiles().OrderBy(f => f.Length).ToList(); // backup files
-
-
-            // FOR TESTING
-            //Console.WriteLine();
-            //Console.WriteLine("MOD\n");
-            //for (int i = 0; i < mod.Count; i++)
-            //{
-            //    Console.WriteLine(mod[i]);
-
-            //}
-            //Console.WriteLine();
-            //Console.WriteLine("BACKUP\n");
-            //for (int i = 0; i < backup.Count; i++)
-            //{
-            //    Console.WriteLine(backup[i]);
-            //}
-            //Console.WriteLine();
-
 
             if (mod.Count != backup.Count)
             {
@@ -248,88 +243,133 @@ namespace FileExplorerHelper
 
             List<DirectoryInfo> folders = GetRootFolder().GetDirectories().ToList(); // convert to list
             List<FileInfo> files = new List<FileInfo>(); // make new list to store final files
-            List<FileInfo> oldFiles = GetBackupFiles();
+            List<FileInfo> oldFiles = GetBackupFiles(); // backed up files
             List<DirectoryInfo> foldersToPurge = new List<DirectoryInfo>();
 
-
-
-            //// run length of backup files
-            //for (int i = 0; i < oldFiles.Count; i++)
-            //{
-
-            //    // check if there is a normal file still in the folder that didnt get organized
-            //    // then check if file was not moved (is same) and add to list
-            //    if (GetListOfFiles().Count != 0)
-            //    {
-
-
-
-
-            //        //if (oldFiles.Find(GetListOfFiles()[i]).FullName.Equals(GetListOfFiles()[i].FullName))
-            //        //{
-            //        //    files.Add(oldFiles[i]); // add to list
-            //        //}
-            //    }
-            //}
-
-            
+            for (int i = 0; i < oldFiles.Count; i++)
+            {
+                Console.WriteLine(oldFiles[i]);
+            }
 
             // loop through each folder
             foreach (DirectoryInfo folder in folders)
             {
-                switch (folder.Name)
+                // loop though each folder and prioritize the CLEANUP folders,
+                // if don't exist, use regular folders
+                
+                // AUDIO
+                if (folder.Name == "Audio-CLEANUP")
                 {
-                    case "Documents":
-                        // then loop throuhh each file in the folder
-                        foreach (FileInfo file in folder.GetFiles())
-                        {
-                            Console.WriteLine("Doc added.");
-                            files.Add(file); // add to root file
-                        }
-                        foldersToPurge.Add(folder);
-                        break;
-                    case "Images":
-                        // then loop throuhh each file in the folder
-                        foreach (FileInfo file in folder.GetFiles())
-                        {
-                            Console.WriteLine("Image added.");
-                            files.Add(file); // add to root file
-                        }
-                        foldersToPurge.Add(folder);
-                        break;
-                    case "Audio":
-                        // then loop through each file in the folder
-                        foreach (FileInfo file in folder.GetFiles())
-                        {
-                            files.Add(file); // add to root file
-                        }
-                        foldersToPurge.Add(folder);
-                        break;
-                    case "Videos":
-                        // then loop through each file in the folder
-                        foreach (FileInfo file in folder.GetFiles())
-                        {
-                            files.Add(file); // add to root file
-                        }
-                        foldersToPurge.Add(folder);
-                        break;
-                    case "Shortcuts":
-                        // then loop through each file in the folder
-                        foreach (FileInfo file in folder.GetFiles())
-                        {
-                            files.Add(file); // add to root file
-                        }
-                        foldersToPurge.Add(folder);
-                        break;
-                    case "Executables":
-                        // then loop through each file in the folder
-                        foreach (FileInfo file in folder.GetFiles())
-                        {
-                            files.Add(file); // add to root file
-                        }
-                        foldersToPurge.Add(folder);
-                        break;
+                    ResetFileHelper(folder, files, foldersToPurge);
                 }
+                else if(folder.Name == "Audio")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+
+                // DOCUMENTS
+                if (folder.Name == "Documents-CLEANUP")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+                else if(folder.Name == "Documents")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+
+                // EXECUTABLES
+                if (folder.Name == "Executables-CLEANUP")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+                else if (folder.Name == "Executables")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+
+                // IMAGES
+                if (folder.Name == "Images-CLEANUP")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+                else if (folder.Name == "Images")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+
+                // SHORTCUTS
+                if (folder.Name == "Shortcuts-CLEANUP")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+                else if (folder.Name == "Shortcuts")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+
+                // VIDEOS
+                if (folder.Name == "Videos-CLEANUP")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+                else if (folder.Name == "Videos")
+                {
+                    ResetFileHelper(folder, files, foldersToPurge);
+                }
+
+                //switch (folder.Name)
+                //{
+                //    case "Documents-CLEANUP":
+                //        // then loop throuhh each file in the folder
+                //        foreach (FileInfo file in folder.GetFiles())
+                //        {
+                //            Console.WriteLine("Doc added.");
+                //            files.Add(file); // add to root file
+                //        }
+                //        foldersToPurge.Add(folder);
+                //        break;
+                //    case "Images":
+                //        // then loop throuhh each file in the folder
+                //        foreach (FileInfo file in folder.GetFiles())
+                //        {
+                //            Console.WriteLine("Image added.");
+                //            files.Add(file); // add to root file
+                //        }
+                //        foldersToPurge.Add(folder);
+                //        break;
+                //    case "Audio":
+                //        // then loop through each file in the folder
+                //        foreach (FileInfo file in folder.GetFiles())
+                //        {
+                //            files.Add(file); // add to root file
+                //        }
+                //        foldersToPurge.Add(folder);
+                //        break;
+                //    case "Videos":
+                //        // then loop through each file in the folder
+                //        foreach (FileInfo file in folder.GetFiles())
+                //        {
+                //            files.Add(file); // add to root file
+                //        }
+                //        foldersToPurge.Add(folder);
+                //        break;
+                //    case "Shortcuts":
+                //        // then loop through each file in the folder
+                //        foreach (FileInfo file in folder.GetFiles())
+                //        {
+                //            files.Add(file); // add to root file
+                //        }
+                //        foldersToPurge.Add(folder);
+                //        break;
+                //    case "Executables":
+                //        // then loop through each file in the folder
+                //        foreach (FileInfo file in folder.GetFiles())
+                //        {
+                //            files.Add(file); // add to root file
+                //        }
+                //        foldersToPurge.Add(folder);
+                //        break;
+                //}
             }
 
             // sort both arrays by length before the move
@@ -354,13 +394,28 @@ namespace FileExplorerHelper
             // then compensate for file that didnt get moved
             foreach (FileInfo file in GetRootFolder().GetFiles().ToList())
             {
-                // add each file that didnt get moved to have control over every file
-                files.Add(file);
+                // dont add .ini desktop file
+                if (!ReturnExtension(file).Equals("ini", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // add each file that didnt get moved to have control over every file
+                    files.Add(file);
+                }
             }
 
             // then sort both arrays again 
             files = files.OrderBy(f => f.Length).ToList();
             oldFiles = oldFiles.OrderBy(f => f.Length).ToList();
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                Console.WriteLine(files[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            for (int i = 0; i < oldFiles.Count; i++)
+            {
+                Console.WriteLine(oldFiles[i]);
+            }
 
             // if the counts are the same, execute the move
             if (oldFiles.Count == files.Count)
@@ -392,6 +447,16 @@ namespace FileExplorerHelper
 
         }
 
+        private void ResetFileHelper(DirectoryInfo folder, List<FileInfo> files, List<DirectoryInfo> foldersToPurge)
+        {
+            // then loop throuhh each file in the folder
+            foreach (FileInfo file in folder.GetFiles())
+            {
+                Console.WriteLine("File added.");
+                files.Add(file); // add to root file
+            }
+            foldersToPurge.Add(folder);
+        }
         #endregion
 
     }

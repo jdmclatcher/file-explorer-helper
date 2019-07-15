@@ -28,10 +28,10 @@
         <Button Name="button_cleanupFolder" IsEnabled="false" Click="Click_CleanupFolder" Content="Cleanup Folder" HorizontalAlignment="Left" Margin="111,172,0,0" VerticalAlignment="Top" Width="134"/>
         <Button Name="button_findAndReplace" IsEnabled="false" Click="Click_FindAndReplace" Content="Find And Replace" Margin="0,172,95,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"/>
         <Button Name="button_findAndRemove" IsEnabled="false" Click="Click_FindAndRemove" Content="Find And Remove" Margin="0,293,95,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"/>
-        <TextBox Name="input_find" IsEnabled="false" Height="23" Margin="0,216,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
-        <TextBox Name="input_replace" IsEnabled="false" Height="23" Margin="0,247,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
-        <TextBlock Margin="0,223,213,0" TextWrapping="Wrap" Text="Find:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="32"/>
-        <TextBlock Margin="0,254,186,0" TextWrapping="Wrap" Text="Replace:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="59"/>
+        <TextBox Name="input_find" IsEnabled="false" Height="27" Margin="0,216,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
+        <TextBox Name="input_replace" IsEnabled="false" Height="28" Margin="0,248,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
+        <TextBlock Margin="0,227,213,0" TextWrapping="Wrap" Text="Find:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="32"/>
+        <TextBlock Margin="0,260,186,0" TextWrapping="Wrap" Text="Replace:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="59"/>
         <TextBox Name="input_remove" IsEnabled="false" Height="23" Margin="0,339,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
         <TextBlock Margin="0,344,186,0" TextWrapping="Wrap" Text="Remove:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="59"/>
         <Button Name="button_imageRename" IsEnabled="false" Click="Click_RenameImages" Content="Rename Images" HorizontalAlignment="Left" Margin="111,293,0,0" VerticalAlignment="Top" Width="134"/>

@@ -103,7 +103,7 @@ namespace FileExplorerHelper
                 Console.WriteLine("Cleanup complete. All valid files were sorted.");
                 AddMessageWindow("Cleanup complete. All valid files were sorted.", 1);
                 util.SetCleanupLast(true);
-                button_undo.IsEnabled = true;
+                // button_undo.IsEnabled = true;
             }
             
         }

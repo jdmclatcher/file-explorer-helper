@@ -90,30 +90,25 @@ namespace FileExplorerHelper
         // helper method to the Cleanup() method
         private void CleanupHelper(FileInfo file, string folderName)
         {
-            string newFolderName;
             // change the path of the file to be path with new folder
             // create new folder (Directory) to place file in (if not already created)
-            if (Directory.Exists(util.GetRootFolder() + "/" + folderName))
+            if (!Directory.Exists(util.GetRootFolder() + "/" + folderName))
             {
-                // create custom folder with -CLEANUP
-                // folderName += "-CLEANUP"; // append -CLEANUP to folder 
-                Directory.CreateDirectory(util.GetRootFolder() + "/" + folderName + "-CLEANUP");
-                Console.WriteLine("Successfully created folder \"" + folderName + "-CLEANUP\".");
-                newFolderName = folderName + "-CLEANUP";
-            } else
-            {
-                // create normal folder
                 Directory.CreateDirectory(util.GetRootFolder() + "/" + folderName);
-                Console.WriteLine("Destination Folder \"" + folderName + "\" already exists.");
-                newFolderName = folderName;
+                Console.WriteLine("Successfully created folder \"" + folderName + "\".");
             }
-            
+            else
+            {
+                Console.WriteLine("Destination Folder \"" + folderName + "\" already exists.");
+            }
+
+
             // check if destination file already exists
-            if(!File.Exists(util.GetRootFolder() + "/" + newFolderName + "/" + file.Name))
+            if (!File.Exists(util.GetRootFolder() + "/" + folderName + "/" + file.Name))
             {
                 // move file to new location
                 Console.Write("Successfully moved " + file.FullName + " to ");
-                file.MoveTo(util.GetRootFolder() + "/" + newFolderName + "/" + file.Name);
+                file.MoveTo(util.GetRootFolder() + "/" + folderName + "/" + file.Name);
                 Console.Write(file.FullName);
                 Console.WriteLine();
             } else

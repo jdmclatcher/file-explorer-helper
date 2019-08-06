@@ -20,6 +20,14 @@ The "Cleanup Folder" button will search through all the files in the folder and 
 
 **NOTE:** This action auto-creates folder(s) in the set folder. If a folder with the same name already exists, the sorted files will be added to that folder.
 
+The folder names are:
+* Audio
+* Documents
+* Executables
+* Images
+* Shortcuts
+* Videos
+
 #### Rename Images
 
 A common file naming convention for auto-generated files named by cameras, phones, etc. is *"FILTYPE_YYYYMMDD_HHMMSS"*. 

@@ -1,27 +1,20 @@
 ﻿/*
  * Jonathan McLatcher
  * File Explorer Helper
- * 2019
+ * 2020
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace FileExplorerHelper
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-
     public partial class MainWindow : Window
     {
+        #region INIT
         Util util; // ref to util class
         private StackPanel scrollViewerBG; // ref to canvas for scroll viewer
         public MainWindow()
@@ -31,24 +24,15 @@ namespace FileExplorerHelper
             util = new Util(); // create instance of utility class
         }
 
-        private void Click_BrowseForFolder(object sender, RoutedEventArgs e)
+        // called to create canvas under scroll viewer
+        public void Init_OutputBox()
         {
-            util.BrowseAndSelectFolder(); // open dialog to browse
-
-            if (util.GetCanUseFunctions())
-            {
-                UpdateTexts(); // update text boxes of data
-                EnableContent(); // enable the default disbaled buttons and content
-                InitRenameChoices(); // set up the renaming choices for image 
-                ClearOutput();
-            }
-            else
-            {
-                // provide message
-                AddMessageWindow("No folder was selected. Please select a folder.", 2);
-            }
+            scrollViewerBG = new StackPanel(); // set to new black stack panel
+            scrollViewer_output.Content = scrollViewerBG; // make it child fo scroll viewer
         }
+        #endregion
 
+        #region Helper Methods
         private void EnableContent()
         {
             button_cleanupFolder.IsEnabled = true;
@@ -59,7 +43,7 @@ namespace FileExplorerHelper
             input_replace.IsEnabled = true;
             button_imageRename.IsEnabled = true;
             input_imageRenameChoice.IsEnabled = true;
-            button_printDetails.IsEnabled = true;
+            //button_printDetails.IsEnabled = true;
         }
 
         private void UpdateTexts()
@@ -83,153 +67,6 @@ namespace FileExplorerHelper
             input_imageRenameChoice.Items.Add("[FILETYPE] - MMDDYYYY - HHMM");   // 5
             input_imageRenameChoice.Items.Add("MM.DD.YYYY - HHMM");              // 6
             input_imageRenameChoice.Items.Add("[FILETYPE] - MM.DD.YYYY - HHMM"); // 7
-        }
-
-        // called from cleanup folder button
-        private void Click_CleanupFolder(object sender, RoutedEventArgs e)
-        {
-            util.GetRootFolder().Refresh(); // refresh info of root folder
-            if (!util.GetRootFolder().Exists)
-            {
-                Console.WriteLine("Folder was moved, deleted, or edited. Please browse for a new folder.");
-                AddMessageWindow("Folder was moved, deleted, or edited. Please browse for a new folder.", 3);
-            }
-            else
-            {
-                // create instance of the Cleanup Folder class and call function on it
-                CleanupFolder folderCleanup = new CleanupFolder(util); // pass in the util class
-                folderCleanup.Cleanup();
-                UpdateTexts();
-                Console.WriteLine("Cleanup complete. All valid files were sorted.");
-                AddMessageWindow("Cleanup complete. All valid files were sorted.", 1);
-                util.SetCleanupLast(true);
-                // button_undo.IsEnabled = true;
-            }
-            
-        }
-
-        // called from find and replace button
-        private void Click_FindAndReplace(object sender, RoutedEventArgs e)
-        {
-            FindAndReplace findAndReplace = new FindAndReplace(util);
-            // check if there is input, and distribute it accordingly
-            if (input_find.Text.Equals(null) || input_replace.Text.Equals(null) || input_find.Text.Equals("") || input_replace.Text.Equals(""))
-            {
-                Console.WriteLine("Please provide input");
-                AddMessageWindow("No input provided. Please enter text to find and replace.", 3);
-            }
-            else
-            {
-                findAndReplace.FindAndReplaceFiles(input_find.Text, input_replace.Text);
-                // then clear the text fields
-                input_find.Clear();
-                input_replace.Clear();
-                util.SetCleanupLast(false);
-                button_undo.IsEnabled = true; // re-enable the button
-            }
-            
-        }
-
-        private void Click_FindAndRemove(object sender, RoutedEventArgs e)
-        {
-            FindAndRemove findAndRemove = new FindAndRemove(util);
-            if (input_remove.Text.Equals(null) || input_remove.Text.Equals(""))
-            {
-                Console.WriteLine("Please provide input");
-                AddMessageWindow("No input provided. Please enter text to find and remove.", 3);
-            }
-            else
-            {
-                findAndRemove.FindAndRemoveFiles(input_remove.Text);
-                // then clear the text field
-                input_remove.Clear();
-                util.SetCleanupLast(false);
-                button_undo.IsEnabled = true; // re-enable the button
-            }
-
-        }
-
-        private void Click_RenameImages(object sender, RoutedEventArgs e)
-        {
-            ImageRename imageRenamer = new ImageRename(util);
-            int choice = input_imageRenameChoice.SelectedIndex;
-            if(choice == -1)
-            {
-                Console.WriteLine("No option selected. Please select an option.");
-                AddMessageWindow("No option selected. Please select an option.", 3);
-            }
-            else
-            {
-                imageRenamer.RenameImages(choice);
-                if (imageRenamer.GetNumChanged() == 0)
-                {
-                    Console.WriteLine("No files were renamed.");
-                    AddMessageWindow("Rename complete. No files were renamed.", 1);
-                }
-                else
-                {
-                    Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
-                    AddMessageWindow("Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
-                    util.SetCleanupLast(false);
-                    button_undo.IsEnabled = true; // re-enable the button
-                }
-            }
-
-        }
-
-        public void Click_PrintDetails(object sender, RoutedEventArgs e)
-        {
-            // check if that file already exits
-            if (new FileInfo(util.GetRootFolder().FullName + "/" + util.detailsFilesName + ".txt").Exists)
-            {
-                // and prompt an override
-                if (MessageBox.Show("File \"" + util.detailsFilesName +  "\" already exists. Would you like to overwrite it.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
-                {
-                    // cancel
-                    return;
-                }
-                else
-                {
-                    // proceed
-                    // function that will print out all the files to a .txt file
-                    util.PrintDetails();
-                    // AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
-                }
-            }
-            else
-            {
-                // proceed normally if file doesnt exists
-                util.PrintDetails();
-                // AddMessageWindow("MESSAGE: Details printed to \"" + utilClass.GetRootFolder() + "\\" + utilClass.detailsFilesName + ".txt\"", 1);
-            }
-
-        }
-
-        // function to call to undo previous action
-        public void Click_Undo(object sender, RoutedEventArgs e)
-        {
-            // disable the button again
-            button_undo.IsEnabled = false;
-
-            // check to determine if last action was the cleanup folder function
-            if (util.GetCleanupLast())
-            {
-                Console.WriteLine("Performing a cleanup restore...");
-                util.RestoreCleanup();
-            }
-            else
-            {
-                // normal restore if not
-                Console.WriteLine("Performing a rename restore...");
-                util.RestoreRename();
-            }
-        }
-
-        // called to create canvas under scroll viewer
-        public void Init_OutputBox()
-        {
-            scrollViewerBG = new StackPanel(); // set to new black stack panel
-            scrollViewer_output.Content = scrollViewerBG; // make it child fo scroll viewer
         }
 
         public void AddMessageWindow(string message, int code)
@@ -272,7 +109,149 @@ namespace FileExplorerHelper
         {
             scrollViewerBG.Children.Clear(); // remove all the textblock children in the BG
         }
+        #endregion
 
+        #region OnClick Methods
+        private void Click_BrowseForFolder(object sender, RoutedEventArgs e)
+        {
+            util.BrowseAndSelectFolder(); // open dialog to browse
+
+            if (util.GetCanUseFunctions())
+            {
+                UpdateTexts(); // update text boxes of data
+                EnableContent(); // enable the default disbaled buttons and content
+                InitRenameChoices(); // set up the renaming choices for image 
+                ClearOutput();
+            }
+            else
+            {
+                // provide message
+                AddMessageWindow("No folder was selected. Please select a folder.", 2);
+            }
+        }
+
+        // called from cleanup folder button
+        private void Click_CleanupFolder(object sender, RoutedEventArgs e)
+        {
+            util.GetRootFolder().Refresh(); // refresh info of root folder
+            if (!util.GetRootFolder().Exists)
+            {
+                Console.WriteLine("Folder was moved, deleted, or edited. Please browse for a new folder.");
+                AddMessageWindow("Folder was moved, deleted, or edited. Please browse for a new folder.", 3);
+            }
+            else
+            {
+                // create instance of the Cleanup Folder class and call function on it
+                CleanupFolder folderCleanup = new CleanupFolder(util); // pass in the util class
+                folderCleanup.Cleanup();
+                UpdateTexts();
+                Console.WriteLine("Cleanup complete. All valid files were sorted.");
+                AddMessageWindow("Cleanup complete. All valid files were sorted.", 1);
+                util.SetCleanupLast(true);
+                // button_undo.IsEnabled = true;
+            }
+
+            UpdateTexts(); // update count of files and subfolders
+        }
+
+        // called from find and replace button
+        private void Click_FindAndReplace(object sender, RoutedEventArgs e)
+        {
+            FindAndReplace findAndReplace = new FindAndReplace(util);
+            // check if there is input, and distribute it accordingly
+            if (input_find.Text.Equals(null) || input_replace.Text.Equals(null) || input_find.Text.Equals("") || input_replace.Text.Equals(""))
+            {
+                Console.WriteLine("Please provide input");
+                AddMessageWindow("No input provided. Please enter text to find and replace.", 3);
+            }
+            else
+            {
+                findAndReplace.FindAndReplaceFiles(input_find.Text, input_replace.Text);
+                // then clear the text fields
+                input_find.Clear();
+                input_replace.Clear();
+                util.SetCleanupLast(false);
+                button_undo.IsEnabled = true; // re-enable the button
+            }
+            UpdateTexts(); // update count of files and subfolders
+        }
+
+        private void Click_FindAndRemove(object sender, RoutedEventArgs e)
+        {
+            FindAndRemove findAndRemove = new FindAndRemove(util);
+            if (input_remove.Text.Equals(null) || input_remove.Text.Equals(""))
+            {
+                Console.WriteLine("Please provide input");
+                AddMessageWindow("No input provided. Please enter text to find and remove.", 3);
+            }
+            else
+            {
+                findAndRemove.FindAndRemoveFiles(input_remove.Text);
+                // then clear the text field
+                input_remove.Clear();
+                util.SetCleanupLast(false);
+                button_undo.IsEnabled = true; // re-enable the button
+            }
+            UpdateTexts(); // update count of files and subfolders
+        }
+
+        private void Click_RenameImages(object sender, RoutedEventArgs e)
+        {
+            ImageRename imageRenamer = new ImageRename(util);
+            int choice = input_imageRenameChoice.SelectedIndex;
+            if (choice == -1)
+            {
+                Console.WriteLine("No option selected. Please select an option.");
+                AddMessageWindow("No option selected. Please select an option.", 3);
+            }
+            else
+            {
+                imageRenamer.RenameImages(choice);
+                if (imageRenamer.GetNumChanged() == 0)
+                {
+                    Console.WriteLine("No files were renamed.");
+                    AddMessageWindow("Rename complete. No files were renamed.", 1);
+                }
+                else
+                {
+                    Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
+                    AddMessageWindow("Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
+                    util.SetCleanupLast(false);
+                    button_undo.IsEnabled = true; // re-enable the button
+                }
+            }
+            UpdateTexts(); // update count of files and subfolders
+        }
+
+        // function to call to undo previous action
+        private void Click_Undo(object sender, RoutedEventArgs e)
+        {
+            // disable the button again
+            button_undo.IsEnabled = false;
+
+            // check to determine if last action was the cleanup folder function
+            if (util.GetCleanupLast())
+            {
+                Console.WriteLine("Performing a cleanup restore...");
+                util.RestoreCleanup();
+            }
+            else
+            {
+                // normal restore if not
+                Console.WriteLine("Performing a rename restore...");
+                util.RestoreRename();
+            }
+            UpdateTexts(); // update count of files and subfolders
+        }
+
+        //clear console output
+        private void Click_ClearOutput(object sender, RoutedEventArgs e)
+        {
+            ClearOutput();
+        }
+        #endregion
+
+        #region Special Function
         // drag and drop folder functionality
         public void Drop_Folder(object sender, DragEventArgs e)
         {
@@ -296,9 +275,9 @@ namespace FileExplorerHelper
                 {
                     AddMessageWindow("File dragged in is not a folder. Please drag in a folder.", 3);
                 }
-                
+
             }
         }
+        #endregion
     }
-
 } 

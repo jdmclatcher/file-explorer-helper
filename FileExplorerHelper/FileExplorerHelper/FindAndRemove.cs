@@ -1,15 +1,12 @@
 ﻿/*
  * Jonathan McLatcher
  * File Explorer Helper
- * 2019
+ * 2020
  */
 
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileExplorerHelper
 {
@@ -63,7 +60,7 @@ namespace FileExplorerHelper
                     files[i].MoveTo(newName);
                 }
             }
-            util.AddMessage("All instances of \"" + toRemove + "\" removed in all files. " + GetNumChanged() + " file(s) modified.", 1);
+            util.AddMessage("All instances of \"" + toRemove + "\" removed. " + GetNumChanged() + " file(s) modified.", 1);
         }
 
     }

@@ -56,10 +56,6 @@ The Undo button will undo the most recent action and restore the modified file(s
 
 The output window will provide you will helpful status messages or warnings as you use the program.
 
-#### Print Details
-
-The "Print Details" button will print out specific details about the current folder in a .txt file. This file will be created in the folder that you selected with the "Browse for Folder" button.
-
 ## Other Info
 
 Please feel free to download this project and use it however you would like!

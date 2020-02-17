@@ -15,37 +15,41 @@
         FontFamily="{StaticResource MaterialDesignFont}"
         ResizeMode="CanMinimize">
     <Grid>
-        <materialDesign:Card Padding="32" Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="267*"/>
+            <RowDefinition Height="242*"/>
+        </Grid.RowDefinitions>
+        <materialDesign:Card Padding="32" Margin="16,16,16,0">
             <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">File Explorer Helper</TextBlock>
         </materialDesign:Card>
-        <TextBlock HorizontalAlignment="Left" Margin="281,31,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" Width="102" FontWeight="Bold"/>
-        <Button FontSize="12" Click="Click_BrowseForFolder" Content="Browse for Folder" Margin="205,121,336,0" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="281,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="File(s) In Folder:"/>
-        <TextBlock HorizontalAlignment="Left" Margin="281,78,0,0" TextWrapping="Wrap" Text="Sub-Folder(s):" VerticalAlignment="Top" Width="86"/>
+        <TextBlock Margin="281,31,0,0" TextWrapping="Wrap" Text="FOLDER NAME: " VerticalAlignment="Top" FontWeight="Bold" HorizontalAlignment="Left" Width="100"/>
+        <Button FontSize="12" Click="Click_BrowseForFolder" Content="Browse for Folder" Margin="205,121,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="151"/>
+        <TextBlock Margin="281,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="File(s) In Folder:" HorizontalAlignment="Left" Width="100"/>
+        <TextBlock Margin="281,78,0,0" TextWrapping="Wrap" Text="Sub-Folder(s):" VerticalAlignment="Top" HorizontalAlignment="Left" Width="84"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,31,0,0" TextWrapping="Wrap" Name="text_folderName" VerticalAlignment="Top" FontWeight="Bold" Width="282"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,62,0,0" TextWrapping="Wrap" Name="text_filesNum" VerticalAlignment="Top" Width="282"/>
         <TextBlock HorizontalAlignment="Left" Margin="383,78,0,0" TextWrapping="Wrap" Name="text_subFoldersNum" VerticalAlignment="Top" Width="282"/>
-        <Button Name="button_cleanupFolder" IsEnabled="false" Click="Click_CleanupFolder" Content="Cleanup Folder" HorizontalAlignment="Left" Margin="111,172,0,0" VerticalAlignment="Top" Width="134"/>
+        <Button Name="button_cleanupFolder" IsEnabled="false" Click="Click_CleanupFolder" Content="Cleanup Folder" Margin="111,172,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="134"/>
         <Button Name="button_findAndReplace" IsEnabled="false" Click="Click_FindAndReplace" Content="Find And Replace" Margin="0,172,95,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"/>
-        <Button Name="button_findAndRemove" IsEnabled="false" Click="Click_FindAndRemove" Content="Find And Remove" Margin="0,293,95,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"/>
+        <Button Name="button_findAndRemove" IsEnabled="false" Click="Click_FindAndRemove" Content="Find And Remove" Margin="0,26,95,0" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Right" Width="150"/>
         <TextBox Name="input_find" IsEnabled="false" Height="27" Margin="0,216,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
-        <TextBox Name="input_replace" IsEnabled="false" Height="28" Margin="0,248,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
+        <TextBox Name="input_replace" IsEnabled="false" Height="28" Margin="0,248,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.RowSpan="2" HorizontalAlignment="Right" Width="86"/>
         <TextBlock Margin="0,227,213,0" TextWrapping="Wrap" Text="Find:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="32"/>
-        <TextBlock Margin="0,260,186,0" TextWrapping="Wrap" Text="Replace:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="59"/>
-        <TextBox Name="input_remove" IsEnabled="false" Height="23" Margin="0,339,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Right" Width="86"/>
-        <TextBlock Margin="0,344,186,0" TextWrapping="Wrap" Text="Remove:" VerticalAlignment="Top" HorizontalAlignment="Right" Width="59"/>
-        <Button Name="button_imageRename" IsEnabled="false" Click="Click_RenameImages" Content="Rename Images" HorizontalAlignment="Left" Margin="111,293,0,0" VerticalAlignment="Top" Width="134"/>
-        <ComboBox Name="input_imageRenameChoice" IsEnabled="false" HorizontalAlignment="Left" Margin="65,334,0,0" VerticalAlignment="Top" Width="227"/>
+        <TextBlock Margin="0,260,186,0" TextWrapping="Wrap" Text="Replace:" VerticalAlignment="Top" Grid.RowSpan="2" HorizontalAlignment="Right" Width="59"/>
+        <TextBox Name="input_remove" IsEnabled="false" Height="23" Margin="0,72,95,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Right" Width="86"/>
+        <TextBlock Margin="0,77,186,0" TextWrapping="Wrap" Text="Remove:" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Right" Width="59"/>
+        <Button Name="button_imageRename" IsEnabled="false" Click="Click_RenameImages" Content="Rename Images" Margin="111,26,0,0" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Left" Width="134"/>
+        <ComboBox Name="input_imageRenameChoice" IsEnabled="false" HorizontalAlignment="Left" Margin="65,67,0,0" VerticalAlignment="Top" Width="227" Grid.Row="1"/>
 
-        <Label Content="Output" Margin="317,374,317,0" VerticalAlignment="Top" FontWeight="Bold" HorizontalAlignment="Center"/>
-        <Button Name="button_printDetails" IsEnabled="false" Click="Click_PrintDetails" Content="Print Details" HorizontalAlignment="Left" Margin="513,68,0,0" Width="113" Height="26" VerticalAlignment="Top"/>
-        <materialDesign:Card Padding="32" Margin="16,405,16,19" VerticalAlignment="Stretch" />
-        <ScrollViewer CanContentScroll="True" Name="scrollViewer_output" Margin="20,405,16,20" BorderThickness="2"/>
-        <Button Name="button_undo" IsEnabled="false" Content="Undo" Click="Click_Undo" HorizontalAlignment="Left" Margin="16,113,0,0" VerticalAlignment="Top" Width="75"/>
-        <Border BorderBrush="DodgerBlue" BorderThickness="2" CornerRadius="3" Margin="360,121,213,0" Height="32" VerticalAlignment="Top"/>
+        <Label Content="Output" Margin="319,107,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.Row="1" HorizontalAlignment="Left" Width="54"/>
+        <materialDesign:Card Padding="32" Margin="16,138,16,19" VerticalAlignment="Stretch" Grid.Row="1" />
+        <ScrollViewer CanContentScroll="True" Name="scrollViewer_output" Margin="20,138,16,20" BorderThickness="2" Grid.Row="1"/>
+        <Button Name="button_undo" IsEnabled="false" Content="Undo" Click="Click_Undo" Margin="16,113,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75"/>
+        <Border BorderBrush="DodgerBlue" BorderThickness="2" CornerRadius="3" Margin="360,121,0,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Left" Width="119"/>
         <StackPanel Background="Transparent" Drop="Drop_Folder" AllowDrop="true" HorizontalAlignment="Left" Height="32" Margin="363,121,0,0" VerticalAlignment="Top" Width="100">
             <Grid />
-            <TextBlock FontSize="11" TextWrapping="Wrap" Text="Or Drag and Drop a Folder Here..." Height="31" HorizontalAlignment="Center" Width="100" VerticalAlignment="Center" Margin="2,3,-2,0"/>
+            <TextBlock FontSize="11" TextWrapping="Wrap" Text="Or Drag and Drop a Folder Here..." Height="31" VerticalAlignment="Center" Margin="2,3,-2,0"/>
         </StackPanel>
+        <Button Click="Click_ClearOutput" Content="CLEAR" Margin="0,112,16,0" VerticalAlignment="Top" Height="23" Grid.Row="1" HorizontalAlignment="Right" Width="86"/>
     </Grid>
 </Window>

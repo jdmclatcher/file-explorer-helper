@@ -1,27 +1,24 @@
 ﻿/*
  * Jonathan McLatcher
  * File Explorer Helper
- * 2019
+ * 2020
  */
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Windows;
 
 namespace FileExplorerHelper
 {
     /// <summary>
-    /// utility class for helpful tools
+    /// utility class with helpful tools
     /// </summary>
 
     // for all helper methods
     // also for storing root path to folder
-    // and other constant data
+    // and other global/constant data
     public class Util
     { 
         // create a variable to hold data about root folder
@@ -30,7 +27,6 @@ namespace FileExplorerHelper
         private int subFolderCount;
         private int fileCount;
         private bool canUseFunctions = true; // can use the functions of the program
-        public string detailsFilesName = "Files_Details";
         private List<FileInfo> backupFiles; // list of current files and info in folder
         private bool cleanupLast; // true if most recent action was the cleanup folder function
 
@@ -38,7 +34,29 @@ namespace FileExplorerHelper
         // Audio, Documents, Executables, Images, Shortcuts, Videos (order)
         private bool[] specialFolders = new bool[6];
 
-        #region Constructor and Getters/Setters
+        // function that opens dialog to prompt input of desired folder
+        public void BrowseAndSelectFolder()
+        {
+            FolderBrowserDialog Dialog = new FolderBrowserDialog();
+
+            Dialog.ShowDialog(); // pop up window
+
+            if ((Dialog.SelectedPath == null) || (Dialog.SelectedPath == ""))
+            {
+                this.canUseFunctions = false; // restrict access to functions until proper folder selected
+            }
+            else
+            {
+                this.canUseFunctions = true; // dont restrict user access
+                // sets the root folder to the selected folder
+                SetRootFolder(new DirectoryInfo(Dialog.SelectedPath));
+                CountFilesAndFolders(); // update file and subfolder count
+            }
+
+            Dialog.Reset();
+        }
+
+        #region Constructor and Get/Set
         public DirectoryInfo GetRootFolder()
         {
             return this.rootFolder;
@@ -149,58 +167,12 @@ namespace FileExplorerHelper
             SetBackupFiles(GetListOfFiles()); // set the backup files value to current files in folder
         }
 
-        #endregion
-
-        // function that opens dialog to prompt input of desired folder
-        public void BrowseAndSelectFolder()
-        {
-            FolderBrowserDialog Dialog = new FolderBrowserDialog();
-
-            Dialog.ShowDialog(); // pop up window
-
-            if((Dialog.SelectedPath == null) || (Dialog.SelectedPath == ""))
-            {
-                this.canUseFunctions = false; // restrict access to functions until proper folder selected
-            }
-            else
-            {
-                this.canUseFunctions = true; // dont restrict user access
-                // sets the root folder to the selected folder
-                SetRootFolder(new DirectoryInfo(Dialog.SelectedPath));
-                CountFilesAndFolders(); // update file and subfolder count
-            }
-
-            Dialog.Reset();
-        }
-
-        public void PrintDetails()
-        {
-            // if folder still exists, do code
-            if(new DirectoryInfo(GetRootFolder().FullName).Exists)
-            { 
-                // print out all paths of all files in folder to one .txt file
-                // new blank string array of the same size as the number of files
-                string[] paths = new string[GetListOfFiles().Count];
-                for (int i = 0; i < GetListOfFiles().Count; i++)
-                {
-                    paths[i] = GetListOfFiles()[i].FullName;
-                }
-                File.WriteAllLines(GetRootFolder().FullName + "/" + detailsFilesName + ".txt", paths);
-                AddMessage("Details printed to \"" + GetRootFolder() + "\\" + detailsFilesName + ".txt\"", 1);
-            }
-            // if not, print out error
-            else
-            {
-                AddMessage("Folder moved/edited/deleted. Please browse of a new folder and try again.", 3);
-            }
-            
-        }
-
         public void AddMessage(string message, int code)
         {
             MainWindow mainWindow = (MainWindow)System.Windows.Application.Current.MainWindow;
             mainWindow.AddMessageWindow(message, code);
         }
+        #endregion
 
         #region Undo Actions
         // general restore for all basic functions (that are not cleanup folder)
@@ -235,6 +207,7 @@ namespace FileExplorerHelper
             }
         }
 
+        // TODO: Fix cleanup undo
         public void RestoreCleanup()
         {
             // loop through each sub folder 
@@ -447,6 +420,7 @@ namespace FileExplorerHelper
 
         }
 
+        //helper for undo cleanup
         private void ResetFileHelper(DirectoryInfo folder, List<FileInfo> files, List<DirectoryInfo> foldersToPurge)
         {
             // then loop throuhh each file in the folder
@@ -458,6 +432,5 @@ namespace FileExplorerHelper
             foldersToPurge.Add(folder);
         }
         #endregion
-
     }
 }

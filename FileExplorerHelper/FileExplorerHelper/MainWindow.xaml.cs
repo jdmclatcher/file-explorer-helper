@@ -43,12 +43,14 @@ namespace FileExplorerHelper
             input_replace.IsEnabled = true;
             button_imageRename.IsEnabled = true;
             input_imageRenameChoice.IsEnabled = true;
+            listView_filesInFolder.IsEnabled = true;
             //button_printDetails.IsEnabled = true;
         }
 
         private void UpdateTexts()
         {
             util.CountFilesAndFolders();
+            PopulateListView();
             text_folderName.Text = util.GetRootFolder().Name; // set text to name of folder
             // set files and subfolders number
             text_filesNum.Text = util.GetNumFiles().ToString();
@@ -279,5 +281,17 @@ namespace FileExplorerHelper
             }
         }
         #endregion
+
+        private void PopulateListView()
+        {
+            if(util.GetListOfFiles().Count == 0)
+            {
+                listView_filesInFolder.ItemsSource = new string[] { "NO FILES FOUND" }; 
+            }
+            else
+            {
+                listView_filesInFolder.ItemsSource = util.GetListOfFiles();
+            }
+        }
     }
 } 

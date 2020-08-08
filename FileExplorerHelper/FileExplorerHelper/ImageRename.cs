@@ -1,8 +1,10 @@
-﻿/*
+﻿/// DEPRECATED ///
+
+/*
  * Jonathan McLatcher
  * File Explorer Helper
  * 2020
- */
+ 
 
 using System;
 using System.Collections.Generic;
@@ -165,3 +167,4 @@ namespace FileExplorerHelper
         }
     }
 }
+*/

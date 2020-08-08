@@ -41,8 +41,8 @@ namespace FileExplorerHelper
             input_find.IsEnabled = true;
             input_remove.IsEnabled = true;
             input_replace.IsEnabled = true;
-            button_imageRename.IsEnabled = true;
-            input_imageRenameChoice.IsEnabled = true;
+            //button_imageRename.IsEnabled = true;
+            //input_imageRenameChoice.IsEnabled = true;
             listView_filesInFolder.IsEnabled = true;
             //button_printDetails.IsEnabled = true;
         }
@@ -57,19 +57,19 @@ namespace FileExplorerHelper
             text_subFoldersNum.Text = util.GetNumSubFolders().ToString();
         }
 
-        private void InitRenameChoices()
-        {
-            input_imageRenameChoice.Items.Clear(); // clear all the choices before adding again
-            // add all the choices to the combo box
-            input_imageRenameChoice.Items.Add("MM.DD.YYYY");                     // 0
-            input_imageRenameChoice.Items.Add("[FILETYPE] - MM.DD.YYYY");        // 1
-            input_imageRenameChoice.Items.Add("MMDDYYYY");                       // 2
-            input_imageRenameChoice.Items.Add("[FILETYPE] - MMDDYYYY");          // 3
-            input_imageRenameChoice.Items.Add("MMDDYYYY - HHMM");                // 4
-            input_imageRenameChoice.Items.Add("[FILETYPE] - MMDDYYYY - HHMM");   // 5
-            input_imageRenameChoice.Items.Add("MM.DD.YYYY - HHMM");              // 6
-            input_imageRenameChoice.Items.Add("[FILETYPE] - MM.DD.YYYY - HHMM"); // 7
-        }
+        //private void InitRenameChoices()
+        //{
+        //    input_imageRenameChoice.Items.Clear(); // clear all the choices before adding again
+        //    // add all the choices to the combo box
+        //    input_imageRenameChoice.Items.Add("MM.DD.YYYY");                     // 0
+        //    input_imageRenameChoice.Items.Add("[FILETYPE] - MM.DD.YYYY");        // 1
+        //    input_imageRenameChoice.Items.Add("MMDDYYYY");                       // 2
+        //    input_imageRenameChoice.Items.Add("[FILETYPE] - MMDDYYYY");          // 3
+        //    input_imageRenameChoice.Items.Add("MMDDYYYY - HHMM");                // 4
+        //    input_imageRenameChoice.Items.Add("[FILETYPE] - MMDDYYYY - HHMM");   // 5
+        //    input_imageRenameChoice.Items.Add("MM.DD.YYYY - HHMM");              // 6
+        //    input_imageRenameChoice.Items.Add("[FILETYPE] - MM.DD.YYYY - HHMM"); // 7
+        //}
 
         public void AddMessageWindow(string message, int code)
         {
@@ -122,13 +122,13 @@ namespace FileExplorerHelper
             {
                 UpdateTexts(); // update text boxes of data
                 EnableContent(); // enable the default disbaled buttons and content
-                InitRenameChoices(); // set up the renaming choices for image 
+                // InitRenameChoices(); // set up the renaming choices for image 
                 ClearOutput();
             }
             else
             {
                 // provide message
-                AddMessageWindow("No folder was selected. Please select a folder.", 2);
+                AddMessageWindow("No folder was selected. Please select a folder to continue.", 2);
             }
         }
 
@@ -197,33 +197,33 @@ namespace FileExplorerHelper
             UpdateTexts(); // update count of files and subfolders
         }
 
-        private void Click_RenameImages(object sender, RoutedEventArgs e)
-        {
-            ImageRename imageRenamer = new ImageRename(util);
-            int choice = input_imageRenameChoice.SelectedIndex;
-            if (choice == -1)
-            {
-                Console.WriteLine("No option selected. Please select an option.");
-                AddMessageWindow("No option selected. Please select an option.", 3);
-            }
-            else
-            {
-                imageRenamer.RenameImages(choice);
-                if (imageRenamer.GetNumChanged() == 0)
-                {
-                    Console.WriteLine("No files were renamed.");
-                    AddMessageWindow("Rename complete. No files were renamed.", 1);
-                }
-                else
-                {
-                    Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
-                    AddMessageWindow("Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
-                    util.SetCleanupLast(false);
-                    button_undo.IsEnabled = true; // re-enable the button
-                }
-            }
-            UpdateTexts(); // update count of files and subfolders
-        }
+        //private void Click_RenameImages(object sender, RoutedEventArgs e)
+        //{
+        //    ImageRename imageRenamer = new ImageRename(util);
+        //    int choice = input_imageRenameChoice.SelectedIndex;
+        //    if (choice == -1)
+        //    {
+        //        Console.WriteLine("No option selected. Please select an option.");
+        //        AddMessageWindow("No option selected. Please select an option.", 3);
+        //    }
+        //    else
+        //    {
+        //        imageRenamer.RenameImages(choice);
+        //        if (imageRenamer.GetNumChanged() == 0)
+        //        {
+        //            Console.WriteLine("No files were renamed.");
+        //            AddMessageWindow("Rename complete. No files were renamed.", 1);
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine(imageRenamer.GetNumChanged() + " file(s) were renamed.");
+        //            AddMessageWindow("Rename complete. " + imageRenamer.GetNumChanged() + " file(s) were renamed.", 1);
+        //            util.SetCleanupLast(false);
+        //            button_undo.IsEnabled = true; // re-enable the button
+        //        }
+        //    }
+        //    UpdateTexts(); // update count of files and subfolders
+        //}
 
         // function to call to undo previous action
         private void Click_Undo(object sender, RoutedEventArgs e)
@@ -270,7 +270,7 @@ namespace FileExplorerHelper
                     // perform init functions
                     UpdateTexts(); // update text boxes of data
                     EnableContent(); // enable the default disbaled buttons and content
-                    InitRenameChoices(); // set up the renaming choices for image 
+                    // InitRenameChoices(); // set up the renaming choices for image 
                     ClearOutput(); // reset console
                 }
                 else
@@ -284,9 +284,9 @@ namespace FileExplorerHelper
 
         private void PopulateListView()
         {
-            if(util.GetListOfFiles().Count == 0)
+            if (util.GetListOfFiles().Count == 0)
             {
-                listView_filesInFolder.ItemsSource = new string[] { "NO FILES FOUND" }; 
+                listView_filesInFolder.ItemsSource = new string[] { "NO FILES FOUND" };
             }
             else
             {

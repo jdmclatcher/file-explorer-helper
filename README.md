@@ -16,6 +16,8 @@ To begin using the features of the File Explorer Helper, you must select a folde
 
 #### Cleanup Folder
 
+![](cleanup-folder.gif)
+
 The "Cleanup Folder" button will search through all the files in the folder and automatically sort them into newly created sub-folders based on the file type/file extension.
 
 **NOTE:** This action auto-creates folder(s) in the currently selected folder. If a folder with the same name already exists, the sorted files will be added to that folder.
@@ -31,6 +33,8 @@ The folder names are:
 #### Find and Replace
 
 This will find **ALL** the instances of the letter or phrase you specified in the "Find" text box and replace them with the value you provide in the "Replace With" text box. This only applies to the file name itself.
+
+![](replace.gif)
 
 #### Find and Remove
 

@@ -4,11 +4,11 @@
 
 This tool is an unofficial "add-on" for the Windows File Explorer. It functions entirely independently from the Windows File Explorer and adds useful features that are currently not present in Windows.
 
-## How to Open
+## How to Intall
 
-Download the repository and unzip the folder. Then, click on the shortcut called "File Explorer Helper" to run the program.
+Download the .zip file from the "Releases" section of this repository. After unzipping the file, run "setup.exe" to install the application. 
 
-You can also clone the repository and run directly from the source code.
+You can also clone the repository and run the shortcut in the root folder of the repository.
 
 ## Features
 
@@ -32,21 +32,21 @@ The folder names are:
 
 #### Find and Replace
 
-This will find **ALL** the instances of the letter or phrase you specified in the "Find" text box and replace them with the value you provide in the "Replace With" text box. This only applies to the file name itself.
+This will find **ALL** instances of the text provided in the "Find" text box and replace them with the text provided in the "Replace With" text box. 
+NOTE: This only applies to the file name itself.
 
 ![Replace Function GIF](/FileExplorerHelper/Assets/replace.gif)
 
 #### Find and Remove
 
-This will remove **ALL** instances of the letter of the phrase specified in the "Remove" text box from all the files in the folder. This only applies to the file name itself.
+This will remove **ALL** instances of the text provided in the "Remove" text box from all the files in the folder. 
+NOTE: This only applies to the file name itself.
 
 #### Undo
 
 The Undo button will undo the most recent action and restore the modified file(s) to their original name.
 
-**NOTE** The Undo function currently does not work on the Cleanup Folder function. This will be fixed later.
-
-**NOTE:** It's important not to modify the files in the root folder or the sub-folders the cleanup was performed on.
+**NOTE** The Undo function currently does not work on the Cleanup Folder function.
 
 #### The Output Window
 

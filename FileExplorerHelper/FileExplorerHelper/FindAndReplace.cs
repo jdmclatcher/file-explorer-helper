@@ -31,6 +31,7 @@ namespace FileExplorerHelper
         public void FindAndReplaceFiles(string toRemove, string toReplace)
         {
             List<FileInfo> files = util.GetListOfFiles(); // get all files
+            DirectoryInfo rootFolder = util.GetRootFolder();
             util.BackupFiles();
             // loop through and apply changes/replacements
             for (int i = 0; i < files.Count; i++)
@@ -39,10 +40,10 @@ namespace FileExplorerHelper
                 // by replacing any instances of the string with another string
                 // (excluding the file extension itself)
                 
-                string newName = util.GetRootFolder() + "/" + files[i].Name.Substring(0, files[i].Name.LastIndexOf(".")).Replace(toRemove, toReplace) + files[i].Extension;
+                string newName = rootFolder + "/" + files[i].Name.Substring(0, files[i].Name.LastIndexOf(".")).Replace(toRemove, toReplace) + files[i].Extension;
 
                 // if they will be the same file regardless (no replacements were made)
-                if ((util.GetRootFolder() + "/" + files[i].Name).Equals(newName))
+                if ((rootFolder + "/" + files[i].Name).Equals(newName))
                 {
                     Console.WriteLine(files[i] + " skipped.");
                 }

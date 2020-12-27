@@ -231,118 +231,35 @@ namespace FileExplorerHelper
                 // if don't exist, use regular folders
                 
                 // AUDIO
-                if (folder.Name == "Audio-CLEANUP")
+                if (folder.Name == "Audio")
                 {
                     ResetFileHelper(folder, files, foldersToPurge);
                 }
-                else if(folder.Name == "Audio")
-                {
-                    ResetFileHelper(folder, files, foldersToPurge);
-                }
-
                 // DOCUMENTS
-                if (folder.Name == "Documents-CLEANUP")
+                else if (folder.Name == "Documents")
                 {
                     ResetFileHelper(folder, files, foldersToPurge);
                 }
-                else if(folder.Name == "Documents")
-                {
-                    ResetFileHelper(folder, files, foldersToPurge);
-                }
-
                 // EXECUTABLES
-                if (folder.Name == "Executables-CLEANUP")
-                {
-                    ResetFileHelper(folder, files, foldersToPurge);
-                }
                 else if (folder.Name == "Executables")
                 {
                     ResetFileHelper(folder, files, foldersToPurge);
                 }
-
                 // IMAGES
-                if (folder.Name == "Images-CLEANUP")
-                {
-                    ResetFileHelper(folder, files, foldersToPurge);
-                }
                 else if (folder.Name == "Images")
                 {
                     ResetFileHelper(folder, files, foldersToPurge);
                 }
-
                 // SHORTCUTS
-                if (folder.Name == "Shortcuts-CLEANUP")
-                {
-                    ResetFileHelper(folder, files, foldersToPurge);
-                }
                 else if (folder.Name == "Shortcuts")
                 {
                     ResetFileHelper(folder, files, foldersToPurge);
                 }
-
                 // VIDEOS
-                if (folder.Name == "Videos-CLEANUP")
-                {
-                    ResetFileHelper(folder, files, foldersToPurge);
-                }
                 else if (folder.Name == "Videos")
                 {
                     ResetFileHelper(folder, files, foldersToPurge);
                 }
-
-                //switch (folder.Name)
-                //{
-                //    case "Documents-CLEANUP":
-                //        // then loop throuhh each file in the folder
-                //        foreach (FileInfo file in folder.GetFiles())
-                //        {
-                //            Console.WriteLine("Doc added.");
-                //            files.Add(file); // add to root file
-                //        }
-                //        foldersToPurge.Add(folder);
-                //        break;
-                //    case "Images":
-                //        // then loop throuhh each file in the folder
-                //        foreach (FileInfo file in folder.GetFiles())
-                //        {
-                //            Console.WriteLine("Image added.");
-                //            files.Add(file); // add to root file
-                //        }
-                //        foldersToPurge.Add(folder);
-                //        break;
-                //    case "Audio":
-                //        // then loop through each file in the folder
-                //        foreach (FileInfo file in folder.GetFiles())
-                //        {
-                //            files.Add(file); // add to root file
-                //        }
-                //        foldersToPurge.Add(folder);
-                //        break;
-                //    case "Videos":
-                //        // then loop through each file in the folder
-                //        foreach (FileInfo file in folder.GetFiles())
-                //        {
-                //            files.Add(file); // add to root file
-                //        }
-                //        foldersToPurge.Add(folder);
-                //        break;
-                //    case "Shortcuts":
-                //        // then loop through each file in the folder
-                //        foreach (FileInfo file in folder.GetFiles())
-                //        {
-                //            files.Add(file); // add to root file
-                //        }
-                //        foldersToPurge.Add(folder);
-                //        break;
-                //    case "Executables":
-                //        // then loop through each file in the folder
-                //        foreach (FileInfo file in folder.GetFiles())
-                //        {
-                //            files.Add(file); // add to root file
-                //        }
-                //        foldersToPurge.Add(folder);
-                //        break;
-                //}
             }
 
             // sort both arrays by length before the move
@@ -351,17 +268,17 @@ namespace FileExplorerHelper
 
             // check if new file was created and is the same name as file in subfolders, 
             // error out saying file(s) mofified externally
-            for(int i = 0; i < GetListOfFiles().Count; i++)
+            for (int i = 0; i < GetListOfFiles().Count; i++)
             {
-                for(int x = 0; x < files.Count; x++)
+                for (int x = 0; x < files.Count; x++)
                 {
                     if (GetListOfFiles()[i].Name.Equals(files[x].Name))
                     {
-                        AddMessage("Undo failed. File(s) modified externally.", 3);
+                        AddMessage("Undo failed. Either the file(s) were modified externally, or a sub-folder "
+                            + "with a name such as \"Audio\" or \"Documents\" already existed prior to cleanup.", 3);
                         return;
                     }
                 }
-                
             }
 
             // then compensate for file that didnt get moved
@@ -402,11 +319,11 @@ namespace FileExplorerHelper
                         files[i].MoveTo(oldFiles[i].FullName); // move back to original 
                     }
                 }
-                AddMessage("Action successfully undone. " + oldFiles.Count + " files were reverted.", 1);
+                AddMessage("Action successfully undone. " + oldFiles.Count + " file(s) reverted to original location.", 1);
                 foreach (DirectoryInfo folder in foldersToPurge)
                 {
                     // only purge folder if has no contents
-                    if(folder.GetFiles().Length == 0)
+                    if (folder.GetFiles().Length == 0)
                     {
                         folder.Delete();
                     }

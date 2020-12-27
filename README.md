@@ -22,13 +22,19 @@ The "Cleanup Folder" button will search through all the files in the folder and 
 
 **NOTE:** This action auto-creates folder(s) in the currently selected folder. If a folder with the same name already exists, the sorted files will be added to that folder.
 
-The folder names are:
-* Audio
-* Documents
-* Executables
-* Images
-* Shortcuts
-* Videos
+The folder names (along with the currently supported extensions) are:
+* **Audio**
+  * AIF, CDA, MID, MIDI, MP3, MPA, OGG, WAV, WMA, WPL, AAC, FLAC, M4A
+* **Documents**
+  * ARJ, DEB, PKG, RAR, RPM, GZ, Z, ZIP, CSV, DAT, DB, DBF, LOG, MDB, SAV, SQL, TAR, XML, FNT, FON, OTF, TTF, ASP, ASPX, CER, CFM, CGI, CSS, HTM, HTML, JS, JSP, PART, PHP, PY, RSS, XHTML, KEY, OPD, PPS, PPT, PPTX, C, CLASS, CPP, CS, H, JAVA, SH, SWIFT, VB, ODS, XLR, XLS, XLSX, DOC, DOCX, ODT, PDF, RTF, TEX, TXT, WKS, WPS, WPD
+* **Executables**
+  * APK, BAT, CGI, PL, COM, EXE, GADGET, JAR, PY, WSF
+* **Images**
+  * AI, BMP, GIF, ICO, JPEG, JPG, PNG, PS, PSD, SVG, TIF, TIFF
+* **Shortcuts**
+  * LNK, URL
+* **Videos**
+  * AVI, FLV, M4V, H264, MKV, MOV, MP4, MPG, MPEG, RM, SWF, VOB, WMV, QT, WEBM
 
 #### Find and Replace
 

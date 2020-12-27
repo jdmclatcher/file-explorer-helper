@@ -8,6 +8,6 @@ namespace FileExplorerHelper
 {
     public enum Audio
     {
-        AIF, CDA, MID, MIDI, MP3, MPA, OGG, WAV, WMA, WPL, AAC, FLAC
+        AIF, CDA, MID, MIDI, MP3, MPA, OGG, WAV, WMA, WPL, AAC, FLAC, M4A
     }
 }

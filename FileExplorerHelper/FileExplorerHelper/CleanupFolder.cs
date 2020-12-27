@@ -28,16 +28,16 @@ namespace FileExplorerHelper
 
             // check for if there are files in the folder
             bool foundAFile = false;
-            if(files.Count > 0)
+            if (files.Count > 0)
             {
                 foundAFile = true;
             }
             // loop through all the files and apply changes using helper method
-            for(int i = 0; i < files.Count; i++)
+            for (int i = 0; i < files.Count; i++)
             {
                 // get extension of current file
                 string extension = util.ReturnExtension(files[i]);
-                
+
                 // sort based on type of file
                 if (Enum.IsDefined(typeof(Audio), extension.ToUpper()))
                 {
